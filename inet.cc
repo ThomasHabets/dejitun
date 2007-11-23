@@ -32,6 +32,7 @@ public:
 		t->sin_family = AF_INET;
 		t->sin_port = htons(port);
 		peer = (struct sockaddr*)t;
+		listen(fd,10);
 	}
 
 	// returns false for warnings

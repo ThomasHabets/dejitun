@@ -20,7 +20,7 @@ public:
 	{
 		ssize_t n;
 		n = s.length();
-		if (n != ::write(fd,s.data(),s.length())) {
+		if (n != ::write(fd,s.data(),n)) {
 			if (n < 0) {
 				stats.writeError++;
 				throw "FDWrapper::write(): FIXME";
@@ -53,14 +53,23 @@ public:
 #include"tun.cc"
 #include"inet.cc"
 
+#if 1
 struct Packet {
-	char version;
-	int64_t   minTime;  // ms since 1970
-	int64_t   maxTime;  // ms since 1970
-	uint32_t  jitter;   // jitter in ms
+	char version __attribute__ ((__packed__));
+	int64_t   minTime __attribute__ ((__packed__));  // ms since 1970
+	int64_t   maxTime __attribute__ ((__packed__));  // ms since 1970
+	uint32_t  jitter  __attribute__ ((__packed__));   // jitter in ms
 	char      payload[0];
 };
-
+#else
+struct Packet {
+	char version;
+	int64_t   minTime;
+	int64_t   maxTime;
+	uint32_t  jitter;
+	char      payload[0];
+};
+#endif
 
 void run(const std::string &rhost, int rport, int lport)
 {
@@ -73,7 +82,8 @@ void run(const std::string &rhost, int rport, int lport)
 		fd_set fds;
 		FD_ZERO(&fds);
 		FD_SET(tun.getFd(), &fds);
-		n = select(std::max(tun.getFd(), 0)+1,
+		FD_SET(inet.getFd(), &fds);
+		n = select(std::max(tun.getFd(), inet.getFd())+1,
 			   &fds,
 			   NULL,
 			   NULL,
@@ -86,8 +96,9 @@ void run(const std::string &rhost, int rport, int lport)
 			continue;
 		}
 		if (FD_ISSET(tun.getFd(), &fds)) {
-			std::cout << "Got packet!\n";
 			const std::string data = tun.read();
+			std::cout << "Got tun packet len " << data.length()
+				  << std::endl;
 
 			Packet *p = 0;
 			try {
@@ -99,15 +110,33 @@ void run(const std::string &rhost, int rport, int lport)
 				p->maxTime = 0;
 				p->jitter = 0;
 				memcpy(p->payload, data.data(), data.length());
-				std::string s((char*)p,(char*)p+data.length());
+				std::string s((char*)p,
+					      (char*)p+data.length()
+					      + sizeof(Packet));
+				std::cout << "\tWriting " << s.length()
+					  << std::endl;
 				inet.write(s);
 			} catch(...) {
 				delete[] p;
 				throw;
 			}
 			delete[] p;
+		}
 
-			std::cout << ".\n";
+		// -----
+		if (FD_ISSET(inet.getFd(), &fds)) {
+			const std::string data = inet.read();
+			std::cout << "Got inet packet len "
+				  << data.length() << std::endl;
+
+			const Packet *p = (Packet*)data.data();
+			size_t len = data.length();
+			len -= sizeof(struct Packet);
+
+			std::string s((char*)p->payload,
+				      (char*)p->payload+len);
+			std::cout << "\tWriting " << s.length() << std::endl;
+			tun.write(s);
 		}
 	}
 }
