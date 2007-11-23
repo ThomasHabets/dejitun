@@ -1,0 +1,3 @@
+TARGETS=dejitun
+
+all: $(TARGETS)
