@@ -157,12 +157,14 @@ static void
 usage(const char *a0, int err)
 {
     printf("Dejitun %.2f, by Thomas Habets\n"
-	   "Usage: %s [ -d <mindelay> ] [ -D <maxdelay> ] [ -j <hitter> ]\n"
-	   "\t[ -h ] [ -p <local port> ]"
+	   "Usage: %s [ -d <mindelay> ] [ -D <maxdelay> ] [ -i <tunnel dev> ]"
+	   "\n\t[ -j <hitter> ] "
+	   "[ -h ] [ -p <local port> ]"
 	   " <remote host> <remote port>\n"
 	   "\t-d <mindelay>    Min (optimal) delay in secs (default 0.0)\n"
 	   "\t-D <maxdelay>    Max delay (drop-limit)  (default 10.0)\n"
 	   "\t-h               Show this help text\n"
+	   "\t-i <tunneldev>   Name of tunnel device (default dejitun0)\n"
 	   "\t-j <jitter>      Jitter between min and min+jitter (default 0.0)"
 	   "\n"
 	   "\t-p <local port>  Local port to listen to (default 12345)\n"
@@ -179,7 +181,7 @@ main(int argc, char **argv)
     Dejitun::Options opts;
 
     int c;
-    while (-1 != (c = getopt(argc, argv, "d:D:hj:p:"))) {
+    while (-1 != (c = getopt(argc, argv, "d:D:hj:i:p:"))) {
 	switch(c) {
 	case 'd':
 	    opts.minDelay = atof(optarg);
@@ -189,6 +191,9 @@ main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage(argv[0], 0);
+	case 'i':
+	    opts.tunnelDevice = optarg;
+	    break;
 	case 'j':
 	    opts.jitter = atof(optarg);
 	    break;
