@@ -9,6 +9,7 @@ SED=sed
 GZIP=gzip
 TEST=test
 WC=wc
+ECHO=echo
 
 all: $(TARGETS)
 
@@ -20,10 +21,10 @@ dejitun-$(VER).tar.gz:
 		| $(GZIP) -9 > $@
 tag:
 	$(GIT) tag -l | $(GREP) -vq '^v$(VER)' \
-		|| (echo -e "-----\nError: Version $(VER) already exists!\n" \
+		|| ($(ECHO) -e "---\nError: Version $(VER) already exists!\n" \
 		&& false)
 	$(TEST) $(shell $(GIT) status | $(WC) -l) -lt 3 \
-		|| (echo -e "-----\nError: You have uncommitted changes!\n" \
+		|| ($(ECHO) -e "---\nError: You have uncommitted changes!\n" \
 		&& false)
 	$(GIT) log > ChangeLog
 	$(GIT) add ChangeLog
