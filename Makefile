@@ -19,12 +19,9 @@ dist: dejitun-$(VER).tar.gz
 
 dejitun-%.tar.gz:
 	$(GIT) archive --format=tar \
-		--prefix=$(shell $(ECHO) $@ | $(SED) 's/\.tar\.gz//')/ \
-		v$(shell $(ECHO) $@ | $(SED) 's/.*-//' | $(SED) 's/\.tar\.gz//') \
-		| $(GZIP) -9 > $@
-dejitun-$(VER).tar.gz:
-	$(GIT) archive --format=tar --prefix=dejitun-$(VER)/ v$(VER) \
-		| $(GZIP) -9 > $@
+	    --prefix=$(shell $(ECHO) $@ | $(SED) 's/\.tar\.gz//')/ \
+	    v$(shell $(ECHO) $@ | $(SED) 's/.*-//' | $(SED) 's/\.tar\.gz//') \
+	    | $(GZIP) -9 > $@
 tag:
 	$(GIT) tag -l | $(GREP) -vq '^v$(VER)' \
 		|| ($(ECHO) -e "---\nError: Version $(VER) already exists!\n" \
