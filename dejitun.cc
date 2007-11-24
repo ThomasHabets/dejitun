@@ -10,7 +10,7 @@
 
 #include"dejitun.h"
 
-static double version = 0.10f;
+static const double version = 0.10f;
 const unsigned char Dejitun::protocolVersion = 0;
 
 /**
