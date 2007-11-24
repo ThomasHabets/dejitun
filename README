@@ -1,0 +1,26 @@
+=========
+ Dejitun
+=========
+:Author: Thomas Habets
+:Contact: thomas@habets.pp.se
+:Copyright: GPL
+
+
+Install
+=======
+Just type "make", and then put the binary (dejitun) whereever you like.
+
+How it works
+============
+FIXME: will fill this in.
+
+Running
+=======
+Creating tunnels require root access.
+
+Start dejitun on both hosts::
+ # ./dejitun -d 1 -l <port on local host> <ip of peer> <port on peer>
+(where 1 here is the minimum delay to induce)
+
+Set up link network on both hosts::
+ # ifconfig dejitun0 192.168.5.1 pointopoint 192.168.5.2
