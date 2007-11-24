@@ -1,3 +1,57 @@
+commit 6af829efbf2648ef949ce211196de59eda02a8dd
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 20:58:49 2007 +0100
+
+    Upped version to 0.12
+
+commit 56ef9996e8a684583f25b9b70f9a3267ef060617
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 20:56:10 2007 +0100
+
+    Added README
+
+commit 2745e6810810b00c3bea3b7863c0bb64a0c2e9f4
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 20:44:18 2007 +0100
+
+    -j not actually implemented yet
+
+commit cbddb5942569b7963b7bd1a63d08c1540d5f9d5f
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 20:41:27 2007 +0100
+
+    Added email address
+
+commit 7ed7fbe1cdda0462f236de219979d40a364c8dc2
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 20:35:38 2007 +0100
+
+    Added TODO
+
+commit 8b3ae21d4f085ad348abe3474df93a2508725c3b
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 20:23:43 2007 +0100
+
+    Makefile cleanup
+
+commit 23c0dcfad5f91e4927e593d0fdb47eb0e88e6bb4
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 20:13:55 2007 +0100
+
+    Makefile: create old tarballs
+
+commit a0a45b20bfd2c4db3362d7655a8d4f4456978cd7
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 20:04:57 2007 +0100
+
+    Makefile cleanup
+
+commit c4759737e8e2fd770020fc82179ef70d06e7f15c
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 19:54:20 2007 +0100
+
+    Updated ChangeLog
+
 commit 0061fb3e5672c66e82998ea24461bd47e5397317
 Author: Thomas Habets <thomas@habets.pp.se>
 Date:   Sat Nov 24 19:32:55 2007 +0100
