@@ -20,11 +20,11 @@ dejitun-$(VER).tar.gz:
 		| $(GZIP) -9 > $@
 tag:
 	$(GIT) tag -l | $(GREP) -vq '^v$(VER)' \
-		|| echo -e "-----\nError: Version $(VER) already exists!\n" \
-		&& false
+		|| (echo -e "-----\nError: Version $(VER) already exists!\n" \
+		&& false)
 	$(TEST) $(shell $(GIT) status | $(WC) -l) -lt 3 \
-		|| echo -e "-----\nError: You have uncommitted changes!\n" \
-		&& false
+		|| (echo -e "-----\nError: You have uncommitted changes!\n" \
+		&& false)
 	$(GIT) log > ChangeLog
 	$(GIT) add ChangeLog
 	$(GIT) commit -m"Updated ChangeLog"
