@@ -29,7 +29,8 @@ Tunnel::Tunnel(const std::string &dev)
     
     struct ifreq ifr;
     memset(&ifr,0,sizeof(struct ifreq));
-    ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
+
+    ifr.ifr_flags = IFF_TUN;
     strncpy(ifr.ifr_name,dev.c_str(),IFNAMSIZ);
     if (0 > ioctl(fd,TUNSETIFF,(void*)&ifr)) {
 	close(fd);
