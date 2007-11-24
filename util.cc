@@ -9,7 +9,7 @@
 int64_t
 htonll(int64_t n)
 {
-	return n; // FIXME
+    return n; // FIXME
 }
 
 /**
@@ -18,7 +18,7 @@ htonll(int64_t n)
 int64_t
 ntohll(int64_t n)
 {
-	return htonll(n);
+    return htonll(n);
 }
 
 /**
@@ -27,11 +27,11 @@ ntohll(int64_t n)
 int64_t
 gettimeofdaymsec()
 {
-	struct timeval tv;
-	if (-1 == gettimeofday(&tv, NULL)) {
-		throw "gettimeofday(): FIXME";
-	}
-	return tv.tv_sec * int64_t(1000) + tv.tv_usec/1000;
+    struct timeval tv;
+    if (-1 == gettimeofday(&tv, NULL)) {
+	throw "gettimeofday(): FIXME";
+    }
+    return tv.tv_sec * int64_t(1000) + tv.tv_usec/1000;
 }
 
 

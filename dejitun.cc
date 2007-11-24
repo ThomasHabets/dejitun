@@ -9,6 +9,9 @@
 
 #include"dejitun.h"
 
+/**
+ *
+ */
 void
 Dejitun::schedulePacket(Packet *p, size_t len, FDWrapper *dev)
 {
@@ -19,6 +22,9 @@ Dejitun::schedulePacket(Packet *p, size_t len, FDWrapper *dev)
     packetQueue.push_back(pe);
 }
 
+/**
+ *
+ */
 void
 Dejitun::packetWriter()
 {
@@ -56,6 +62,9 @@ Dejitun::packetWriter()
     }
 }
 	
+/**
+ *
+ */
 void
 Dejitun::run(const std::string &rhost, int rport, int lport)
 {
@@ -123,6 +132,9 @@ Dejitun::run(const std::string &rhost, int rport, int lport)
     }
 }
 
+/**
+ *
+ */
 void
 Dejitun::writePacket(Packet *p, size_t len, FDWrapper*dev)
 {
@@ -132,6 +144,9 @@ Dejitun::writePacket(Packet *p, size_t len, FDWrapper*dev)
 }
 	
 
+/**
+ *
+ */
 int
 main(int argc, char **argv)
 {

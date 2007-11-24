@@ -26,20 +26,20 @@ public:
  *
  */
 class Inet: public FDWrapper {
-	struct sockaddr *peer;
+    struct sockaddr *peer;
 public:
-	Inet(const std::string &host,int port,int lport = -1);
-	bool write(const std::string &s);
+    Inet(const std::string &host,int port,int lport = -1);
+    bool write(const std::string &s);
 };
 
 /**
  *
  */
 class Tunnel: public FDWrapper {
-	std::string devname;
+    std::string devname;
 public:
-	Tunnel(const std::string &dev);
-	const std::string &getDevname() const { return devname; }
+    Tunnel(const std::string &dev);
+    const std::string &getDevname() const { return devname; }
 };
 
 
