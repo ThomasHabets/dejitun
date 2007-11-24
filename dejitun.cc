@@ -170,7 +170,7 @@ main(int argc, char **argv)
     opts.remotePort = 12345;
     opts.jitter = 0;
     opts.minDelay = 0;
-    opts.maxDelay = 1000;
+    opts.maxDelay = 10000;
     opts.tunnelDevice = "dejitun0";
 
     int c;
