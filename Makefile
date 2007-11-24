@@ -12,6 +12,8 @@ dist: dejitun-$(VER).tar.gz
 dejitun-$(VER).tar.gz:
 	git archive --format=tar --prefix=dejitun-$(VER)/ v$(VER) \
 		| gzip -9 > $@
+tag:
+	git tag -s v$(VER)
 
 dejitun: dejitun.o tun.o inet.o util.o
 	$(LD) $(LDFLAGS) -o $@ $^
