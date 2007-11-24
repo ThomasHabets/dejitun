@@ -1,0 +1,148 @@
+commit 7d54cd8bcec698d10e5d3395f9d9027e031ee471
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 19:32:47 2007 +0100
+
+    Hopefully fixed 'make tag'
+
+commit ac3f2381faa4fdaa8c6df0868e92e29dbc35f833
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 19:29:39 2007 +0100
+
+    Upped version to 0.11
+
+commit b088e28e2cd41d12bf36e28c6124825621a1af3f
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 19:28:54 2007 +0100
+
+    Added 'make tag' to create a new release
+
+commit 85d073a70dd39cc45194c053d932624116bd11a1
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 19:20:02 2007 +0100
+
+    Upped protocol version to 1.
+    
+    TUN_NO_PI removed, this means incompatability with old clients, but allows
+    non-IPv4 traffic inside the tunnel.
+
+commit 7bd73e5fce80a166a123b3ec37c21281a89dd180
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 19:14:23 2007 +0100
+
+    IPv6 inside tunnel (stopped using IFF_NO_PI)
+
+commit 17cc5b35be33c8fba62832f0c8ed48c2757ef875
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 19:13:36 2007 +0100
+
+    Default devname dejitun%d, not dejitun0
+
+commit 678c1625ac2ba86089992fad6dfd2ae963db243e
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 16:14:28 2007 +0100
+
+    Makefile cleanup
+
+commit 460195bc0554b76c8c97356c99e86a90716a49aa
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 16:11:55 2007 +0100
+
+    Added 'make tag'
+
+commit 8f216ea455e32c88222ca0b9eb7317aee018f2d0
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 15:11:37 2007 +0100
+
+    Added "make dist"
+
+commit 9a2682c0bc1a3f6be91b1f228fc1fa4950a7c776
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 15:00:41 2007 +0100
+
+    Added option: -i <tunnel dev>
+
+commit 4b45e9be7f8e8739aeab05bcf2be8d3f1a78d025
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 12:55:49 2007 +0100
+
+    Enforce protocol version check
+    
+    * Enforce protocol version check
+    * Move default options into class
+    * Whitespace-style cleanup
+
+commit 5344946778589e22027fdb2ec8de384fbb4ceeb4
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 03:36:46 2007 +0100
+
+    Fix option-parsing bug.
+
+commit 29a0c6a151a8ba6844bd73d5d5671a1e37129b2b
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 03:24:46 2007 +0100
+
+    oops, that was in seconds, not ms. :-)
+
+commit 7f530e5e897ca3d500218d35344ef6912dec4a8e
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 03:22:32 2007 +0100
+
+    change default maxdelay to 10 seconds
+
+commit 44eb6d58e70e4c183ed348bff1a649d212f48c26
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 03:18:20 2007 +0100
+
+    Code cleanup and option parsing.
+    
+    TODO:
+    * New packet scheduler that doesn't fragment memory
+    * Jitter emulation (depends on new scheduler)
+    * Dynamic adjustment of time difference.
+    * Dynamic adjustment to window of actual jitter.
+
+commit 396b35ee94e71e735c023571a4d73810a8a549eb
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 02:30:07 2007 +0100
+
+    Indent to 4-space
+
+commit 68a6e3efc914908c2852a3f3b34976c80bd7dae8
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 02:27:34 2007 +0100
+
+    Code reorg.
+
+commit b1dd26713f3c9f646dad9e7388391bae797e3ba9
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 01:57:36 2007 +0100
+
+    Simple packet delay scheduler working.
+
+commit 472ce08b2f57cea9c5fcac092f4ba968c35f1388
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Nov 23 22:28:27 2007 +0100
+
+    Working tunnel.
+    
+    Plain and simple tunnel. No jittering or even a first look at the header.
+
+commit 0d874f34ec27ae63cd7762e180579c840afe91f6
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Nov 23 21:31:28 2007 +0100
+
+    Send off tundev-received stuff off to the internet.
+
+commit fc60157198d6992eaadff922fab4e32325f661d4
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Nov 23 20:36:57 2007 +0100
+
+    Added Makefile
+
+commit 0ea4c0baa2e8e5155b68541fadf79de51e60ce62
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Nov 23 19:36:47 2007 +0100
+
+    Working tunnel-capture
+    
+    Packets from local system into dejitun works.
