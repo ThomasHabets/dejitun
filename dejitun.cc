@@ -1,3 +1,12 @@
+/**
+ * TODO
+ *  * New packet scheduler that doesn't fragment memory
+ *  * Jitter emulation (depends on new scheduler)
+ *  * Dynamic adjustment of time difference.
+ *  * Dynamic adjustment to window of actual jitter.
+ *  * Drop privileges
+ *
+ */
 #include<iostream>
 #include<string>
 #include<list>
