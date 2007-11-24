@@ -2,12 +2,15 @@
 #include<string>
 #include<list>
 
+#include<unistd.h>
 #include<time.h>
 #include<errno.h>
 #include<sys/time.h>
 #include<sys/select.h>
 
 #include"dejitun.h"
+
+static double version = 0.10f;
 
 /**
  *
@@ -44,8 +47,8 @@ Dejitun::packetWriter()
 		      << std::endl
 		      << "\tcur: " << curTime << std::endl;
 	}
-			
-	if (0 && itr->packet->maxTime > curTime) {
+	// FIXME: implement jitter
+	if (itr->packet->maxTime < curTime) {
 	    delete[] itr->packet;
 	    // FIXME: stats.drop++
 	    packetQueue.erase(itr);
@@ -66,12 +69,8 @@ Dejitun::packetWriter()
  *
  */
 void
-Dejitun::run(const std::string &rhost, int rport, int lport)
+Dejitun::run()
 {
-    Tunnel tun("dejitun0");
-    Inet inet(rhost, rport, lport);
-    std::cout << tun.getDevname() << std::endl;
-
     for(;;) {
 	int n;
 	struct timeval tv;
@@ -92,25 +91,19 @@ Dejitun::run(const std::string &rhost, int rport, int lport)
 	}
 	if (FD_ISSET(tun.getFd(), &fds)) {
 	    const std::string data = tun.read();
-	    Packet *p = 0;
-	    try {
-		p=(Packet*)(new char[sizeof(Packet)
-				     +data.length()]);
 
-		p->version = 0;
-		p->minTime = htonll(gettimeofdaymsec()+2000);
-		p->maxTime = htonll(htonll(p->minTime)+20000);
-		p->jitter = 0;
-		memcpy(p->payload, data.data(), data.length());
-		std::string s((char*)p,
-			      (char*)p+data.length()
-			      + sizeof(Packet));
-		inet.write(s);
-	    } catch(...) {
-		delete[] p;
-		throw;
-	    }
-	    delete[] p;
+	    std::auto_ptr<char> cp(new char[sizeof(Packet)+data.length()]);
+	    Packet *p = (Packet*)cp.get();
+	    
+	    p->version = 0;
+	    p->minTime=htonll(gettimeofdaymsec()+f2i64(options.minDelay));
+	    p->maxTime=htonll(htonll(p->minTime)+f2i64(options.maxDelay));
+	    p->jitter = htonll(f2i64(options.jitter));
+	    memcpy(p->payload, data.data(), data.length());
+	    std::string s((char*)&*p,
+			  (char*)&*p+data.length()
+			  + sizeof(Packet));
+	    inet.write(s);
 	}
 
 	// -----
@@ -118,7 +111,7 @@ Dejitun::run(const std::string &rhost, int rport, int lport)
 	    const std::string data = inet.read();
 
 	    size_t len = data.length();
-	    Packet *p = (Packet*)new char[len];
+	    Packet *p = (Packet*)new char[len]; // deleted by scheduler
 	    memcpy(p, data.data(), len);
 	    len -= sizeof(struct Packet);
 	    try {
@@ -144,19 +137,73 @@ Dejitun::writePacket(Packet *p, size_t len, FDWrapper*dev)
 }
 	
 
+
+/**
+ *
+ */
+static void
+usage(const char *a0, int err)
+{
+    printf("Dejitun %.2f, by Thomas Habets\n"
+	   "Usage: %s [ -d <mindelay> ] [ -D <maxdelay> ] [ -j <hitter> ]\n"
+	   "\t[ -h ] [ -p <local port> ]"
+	   " <remote host> <remote port>\n"
+	   "\t-d <mindelay>    Min (optimal) delay in secs (default 0.0)\n"
+	   "\t-D <maxdelay>    Max delay (drop-limit)  (default 10.0)\n"
+	   "\t-h               Show this help text\n"
+	   "\t-j <jitter>      Jitter between min and min+jitter (default 0.0)"
+	   "\n"
+	   "\t-p <local port>  Local port to listen to (default 12345)\n"
+	   ,version,a0);
+    exit(err);
+}
+
 /**
  *
  */
 int
 main(int argc, char **argv)
 {
-    if (argc < 4) {
-	std::cerr << "Bice!\n";
-	return 1;
+    Dejitun::Options opts;
+
+    opts.localPort = 12345;
+    opts.remotePort = 12345;
+    opts.jitter = 0;
+    opts.minDelay = 0;
+    opts.maxDelay = 1000;
+    opts.tunnelDevice = "dejitun0";
+
+    int c;
+    while (-1 != (c = getopt(argc, argv, "d:D:hj:p:"))) {
+	switch(c) {
+	case 'd':
+	    opts.minDelay = atof(optarg);
+	    break;
+	case 'D':
+	    opts.maxDelay = atof(optarg);
+	    break;
+	case 'h':
+	    usage(argv[0], 0);
+	case 'j':
+	    opts.jitter = atof(optarg);
+	    break;
+	case 'p':
+	    opts.localPort = atoi(optarg);
+	    break;
+	default:
+	    usage(argv[0], 1);
+	}
     }
+    if (optind + 2 != argc) {
+	usage(argv[0], 1);
+    }
+    opts.peer = argv[1];
+
     try {
-	Dejitun tun;
-	tun.run(argv[1], atoi(argv[2]), atoi(argv[3]));
+	Dejitun tun(opts);
+	printf("Dejitun %.2f, by Thomas Habets, is up and running using %s\n",
+	       version, tun.getDevname().c_str());
+	tun.run();
     } catch(const char*s) {
 	std::cout << s << std::endl;
     } catch(...) {

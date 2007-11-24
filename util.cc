@@ -34,6 +34,14 @@ gettimeofdaymsec()
     return tv.tv_sec * int64_t(1000) + tv.tv_usec/1000;
 }
 
+/**
+ *
+ */
+int64_t f2i64(double f)
+{
+    return (int64_t)(f*1000);
+}
+
 
 /**
  *

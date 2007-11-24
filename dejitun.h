@@ -4,6 +4,30 @@
 #include"util.h"
 
 class Dejitun {
+public:	
+    typedef struct {
+	std::string peer;
+	int remotePort;
+	int localPort;
+	double minDelay;
+	double maxDelay;
+	double jitter;
+	std::string tunnelDevice;
+    } Options;
+    Options options;
+
+    Tunnel tun;
+    Inet inet;
+    Dejitun(const Options&opts)
+	:options(opts),
+	 tun(opts.tunnelDevice),
+	 inet(opts.peer, opts.remotePort, opts.localPort)
+    {
+    }
+    const std::string &getDevname() const { return tun.getDevname(); }
+    void run();
+
+protected:
     // over-the-wire protocol
     struct Packet {
 	char version;
@@ -19,17 +43,15 @@ class Dejitun {
 	size_t len;
 	FDWrapper *dev;
     } PacketEntry;
+    void writePacket(Packet *p, size_t len, FDWrapper*dev);
 
+    /**
+     * Packet scheduler version 1.
+     * It stinks! No support for jitter.
+     */
     std::list<PacketEntry> packetQueue;
-    void
-    schedulePacket(Packet *p, size_t len, FDWrapper *dev);
-    void
-    writePacket(Packet *p, size_t len, FDWrapper*dev);
-    void
-    packetWriter();
-public:	
-    void
-    run(const std::string &rhost, int rport, int lport);
+    void schedulePacket(Packet *p, size_t len, FDWrapper *dev);
+    void packetWriter();
 };
 
 

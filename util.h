@@ -46,21 +46,22 @@ public:
 /**
  *
  */
-int64_t
-htonll(int64_t n);
+int64_t htonll(int64_t n);
 
 /**
  *
  */
-int64_t
-ntohll(int64_t n);
+int64_t ntohll(int64_t n);
 
 /**
  *
  */
-int64_t
-gettimeofdaymsec();
+int64_t gettimeofdaymsec();
 
+/**
+ *
+ */
+int64_t f2i64(double f);
 
 /*
  * Local variables:
