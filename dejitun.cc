@@ -1,6 +1,9 @@
 #include<iostream>
 #include<string>
+#include<list>
 
+#include<time.h>
+#include<sys/time.h>
 #include<sys/select.h>
 
 class FDWrapper {
@@ -53,25 +56,99 @@ public:
 #include"tun.cc"
 #include"inet.cc"
 
-#if 1
 struct Packet {
-	char version __attribute__ ((__packed__));
+	char version;
 	int64_t   minTime __attribute__ ((__packed__));  // ms since 1970
 	int64_t   maxTime __attribute__ ((__packed__));  // ms since 1970
 	uint32_t  jitter  __attribute__ ((__packed__));   // jitter in ms
 	char      payload[0];
 };
-#else
-struct Packet {
-	char version;
-	int64_t   minTime;
-	int64_t   maxTime;
-	uint32_t  jitter;
-	char      payload[0];
-};
-#endif
 
-void run(const std::string &rhost, int rport, int lport)
+int64_t
+htonll(int64_t n)
+{
+	return n; // FIXME
+}
+
+int64_t
+ntohll(int64_t n)
+{
+	return htonll(n);
+}
+
+int64_t
+gettimeofdaymsec()
+{
+	struct timeval tv;
+	if (-1 == gettimeofday(&tv, NULL)) {
+		throw "gettimeofday(): FIXME";
+	}
+	return tv.tv_sec * int64_t(1000) + tv.tv_usec/1000;
+}
+
+typedef struct {
+	Packet *packet;
+	size_t len;
+	FDWrapper *dev;
+} PacketEntry;
+
+std::list<PacketEntry> packetQueue;
+void
+schedulePacket(Packet *p, size_t len, FDWrapper *dev)
+{
+	PacketEntry pe;
+	pe.packet = p;
+	pe.len = len;
+	pe.dev = dev;
+	packetQueue.push_back(pe);
+}
+void
+writePacket(Packet *p, size_t len, FDWrapper*dev);
+
+void
+packetWriter()
+{
+	int64_t curTime = gettimeofdaymsec();
+	std::list<PacketEntry>::iterator tmp;
+	for(std::list<PacketEntry>::iterator itr = packetQueue.begin();
+	    itr != packetQueue.end();
+	    ) {
+		if (0) {
+			std::cout << "\tmin: " << itr->packet->minTime
+				  << " (curtime + " << itr->packet->minTime - curTime << ")" << std::endl
+				  << "\tmax: " << itr->packet->maxTime
+				  << " (curtime + " << itr->packet->maxTime - curTime << ")" << std::endl
+				  << "\tcur: " << curTime << std::endl;
+		}
+		
+		if (0 && itr->packet->maxTime > curTime) {
+			delete[] itr->packet;
+			// FIXME: stats.drop++
+			packetQueue.erase(itr);
+			itr = packetQueue.begin();
+		} else if (itr->packet->minTime < curTime) {
+			writePacket(itr->packet, itr->len, itr->dev);
+			// FIXME: stats.sent++
+			delete[] itr->packet;
+			packetQueue.erase(itr);
+			itr = packetQueue.begin();
+		} else {
+			++itr;
+		}
+	}
+
+}
+
+void
+writePacket(Packet *p, size_t len, FDWrapper*dev)
+{
+	std::string s((const char*)p->payload,
+		      (const char*)p->payload+len);
+	dev->write(s);
+}
+
+void
+run(const std::string &rhost, int rport, int lport)
 {
 	Tunnel tun("dejitun0");
 	Inet inet(rhost, rport, lport);
@@ -79,6 +156,9 @@ void run(const std::string &rhost, int rport, int lport)
 
 	for(;;) {
 		int n;
+		struct timeval tv;
+		tv.tv_sec = 0;
+		tv.tv_usec = 10000;
 		fd_set fds;
 		FD_ZERO(&fds);
 		FD_SET(tun.getFd(), &fds);
@@ -87,34 +167,26 @@ void run(const std::string &rhost, int rport, int lport)
 			   &fds,
 			   NULL,
 			   NULL,
-			   NULL);
+			   &tv);
 		if (n < 0) {
 			std::cerr << "select(): " << strerror(errno)
 				  << std::endl;
 		}
-		if (n == 0) {
-			continue;
-		}
 		if (FD_ISSET(tun.getFd(), &fds)) {
 			const std::string data = tun.read();
-			std::cout << "Got tun packet len " << data.length()
-				  << std::endl;
-
 			Packet *p = 0;
 			try {
 				p=(Packet*)(new char[sizeof(Packet)
 							     +data.length()]);
 
 				p->version = 0;
-				p->minTime = 0;
-				p->maxTime = 0;
+				p->minTime = htonll(gettimeofdaymsec() + 2000);
+				p->maxTime = htonll(htonll(p->minTime) + 20000);
 				p->jitter = 0;
 				memcpy(p->payload, data.data(), data.length());
 				std::string s((char*)p,
 					      (char*)p+data.length()
 					      + sizeof(Packet));
-				std::cout << "\tWriting " << s.length()
-					  << std::endl;
 				inet.write(s);
 			} catch(...) {
 				delete[] p;
@@ -126,18 +198,19 @@ void run(const std::string &rhost, int rport, int lport)
 		// -----
 		if (FD_ISSET(inet.getFd(), &fds)) {
 			const std::string data = inet.read();
-			std::cout << "Got inet packet len "
-				  << data.length() << std::endl;
 
-			const Packet *p = (Packet*)data.data();
 			size_t len = data.length();
+			Packet *p = (Packet*)new char[len];
+			memcpy(p, data.data(), len);
 			len -= sizeof(struct Packet);
-
-			std::string s((char*)p->payload,
-				      (char*)p->payload+len);
-			std::cout << "\tWriting " << s.length() << std::endl;
-			tun.write(s);
+			try {
+				schedulePacket(p, len, &tun);
+			} catch(...) {
+				delete[] p;
+				throw;
+			}
 		}
+		packetWriter();
 	}
 }
 int
