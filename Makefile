@@ -3,17 +3,21 @@ CXXFLAGS=-g
 LD=g++
 LDFLAGS=-g
 RM=rm
+GIT=git
+GREP=grep
+SED=sed
+GZIP=gzip
 
 all: $(TARGETS)
 
-VER=$(shell grep '^static const double version' dejitun.cc \
-	| sed 's/.*=[^0-9]//' | sed 's/[^.0-9]//g')
+VER=$(shell $(GREP) '^static const double version' dejitun.cc \
+	| $(SED) 's/.*=[^0-9]//' | $(SED) 's/[^.0-9]//g')
 dist: dejitun-$(VER).tar.gz
 dejitun-$(VER).tar.gz:
-	git archive --format=tar --prefix=dejitun-$(VER)/ v$(VER) \
-		| gzip -9 > $@
+	$(GIT) archive --format=tar --prefix=dejitun-$(VER)/ v$(VER) \
+		| $(GZIP) -9 > $@
 tag:
-	git tag -s v$(VER)
+	$(GIT) tag -s v$(VER)
 
 dejitun: dejitun.o tun.o inet.o util.o
 	$(LD) $(LDFLAGS) -o $@ $^
