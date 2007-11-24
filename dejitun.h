@@ -24,7 +24,7 @@ public:
 	    minDelay(0),
 	    maxDelay(10),
 	    jitter(0),
-	    tunnelDevice("dejitun0")
+	    tunnelDevice("dejitun%d")
 	{
 	}
     };

@@ -164,7 +164,7 @@ usage(const char *a0, int err)
 	   "\t-d <mindelay>    Min (optimal) delay in secs (default 0.0)\n"
 	   "\t-D <maxdelay>    Max delay (drop-limit)  (default 10.0)\n"
 	   "\t-h               Show this help text\n"
-	   "\t-i <tunneldev>   Name of tunnel device (default dejitun0)\n"
+	   "\t-i <tunneldev>   Name of tunnel device (default dejitun%%d)\n"
 	   "\t-j <jitter>      Jitter between min and min+jitter (default 0.0)"
 	   "\n"
 	   "\t-p <local port>  Local port to listen to (default 12345)\n"
