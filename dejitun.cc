@@ -99,6 +99,10 @@ Dejitun::run()
 	    p->minTime=htonll(gettimeofdaymsec()+f2i64(options.minDelay));
 	    p->maxTime=htonll(htonll(p->minTime)+f2i64(options.maxDelay));
 	    p->jitter = htonll(f2i64(options.jitter));
+
+	    if (!options.minDelay) {
+		p->minTime = 0;
+	    }
 	    memcpy(p->payload, data.data(), data.length());
 	    std::string s((char*)&*p,
 			  (char*)&*p+data.length()
@@ -197,7 +201,7 @@ main(int argc, char **argv)
     if (optind + 2 != argc) {
 	usage(argv[0], 1);
     }
-    opts.peer = argv[1];
+    opts.peer = argv[optind];
 
     try {
 	Dejitun tun(opts);
