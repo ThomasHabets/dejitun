@@ -1,11 +1,14 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <netinet/ip.h> /* superset of previous */
+#include <netinet/ip.h>
 #include <arpa/inet.h>
 
 #include "util.h"
 
+/**
+ *
+ */
 Inet::Inet(const std::string &host,int port,int lport)
     :peer(0)
 {
@@ -34,7 +37,9 @@ Inet::Inet(const std::string &host,int port,int lport)
     listen(fd,10);
 }
 
-// returns false for warnings
+/**
+ *  returns false for warnings
+ */
 bool
 Inet::write(const std::string &s)
 {
@@ -55,7 +60,7 @@ Inet::write(const std::string &s)
     return true;
 }
 
-/*
+/**
  * Local variables:
  * mode: c++
  * c-basic-offset: 4

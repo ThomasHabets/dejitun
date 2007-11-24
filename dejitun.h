@@ -3,9 +3,13 @@
 
 #include"util.h"
 
+/**
+ *
+ */
 class Dejitun {
 public:	
-    typedef struct {
+    class Options {
+    public:
 	std::string peer;
 	int remotePort;
 	int localPort;
@@ -13,8 +17,19 @@ public:
 	double maxDelay;
 	double jitter;
 	std::string tunnelDevice;
-    } Options;
+	Options()
+	    :
+	    remotePort(12345),
+	    localPort(12345),
+	    minDelay(0),
+	    maxDelay(10),
+	    jitter(0),
+	    tunnelDevice("dejitun0")
+	{
+	}
+    };
     Options options;
+    static const unsigned char protocolVersion;
 
     Tunnel tun;
     Inet inet;
@@ -54,8 +69,7 @@ protected:
     void packetWriter();
 };
 
-
-/*
+/**
  * Local variables:
  * mode: c++
  * c-basic-offset: 4

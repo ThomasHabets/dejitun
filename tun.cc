@@ -15,6 +15,10 @@
 #include<linux/if.h>
 #include<linux/if_tun.h>
 #include"util.h"
+
+/**
+ *
+ */
 Tunnel::Tunnel(const std::string &dev)
 {
     memset(&stats, 0, sizeof(stats));
@@ -33,7 +37,8 @@ Tunnel::Tunnel(const std::string &dev)
     }
     devname = ifr.ifr_name;
 }
-/*
+
+/**
  * Local variables:
  * mode: c++
  * c-basic-offset: 4

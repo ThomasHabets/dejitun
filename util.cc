@@ -88,8 +88,7 @@ FDWrapper::~FDWrapper()
     }
 }
 
-
-/*
+/**
  * Local variables:
  * mode: c++
  * c-basic-offset: 4

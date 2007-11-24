@@ -11,6 +11,7 @@
 #include"dejitun.h"
 
 static double version = 0.10f;
+const unsigned char Dejitun::protocolVersion = 0;
 
 /**
  *
@@ -115,14 +116,21 @@ Dejitun::run()
 	    const std::string data = inet.read();
 
 	    size_t len = data.length();
-	    Packet *p = (Packet*)new char[len]; // deleted by scheduler
+
+	    // deleted by scheduler or below
+	    Packet *p = (Packet*)new char[len];
+
 	    memcpy(p, data.data(), len);
 	    len -= sizeof(struct Packet);
-	    try {
-		schedulePacket(p, len, &tun);
-	    } catch(...) {
+	    if (p->version != protocolVersion) {
 		delete[] p;
-		throw;
+	    } else {
+		try {
+		    schedulePacket(p, len, &tun);
+		} catch(...) {
+		    delete[] p;
+		    throw;
+		}
 	    }
 	}
 	packetWriter();
@@ -170,13 +178,6 @@ main(int argc, char **argv)
 {
     Dejitun::Options opts;
 
-    opts.localPort = 12345;
-    opts.remotePort = 12345;
-    opts.jitter = 0;
-    opts.minDelay = 0;
-    opts.maxDelay = 10;
-    opts.tunnelDevice = "dejitun0";
-
     int c;
     while (-1 != (c = getopt(argc, argv, "d:D:hj:p:"))) {
 	switch(c) {
@@ -215,8 +216,7 @@ main(int argc, char **argv)
     }
 }
 
-
-/*
+/**
  * Local variables:
  * mode: c++
  * c-basic-offset: 4

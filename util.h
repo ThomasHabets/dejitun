@@ -63,7 +63,7 @@ int64_t gettimeofdaymsec();
  */
 int64_t f2i64(double f);
 
-/*
+/**
  * Local variables:
  * mode: c++
  * c-basic-offset: 4
