@@ -204,6 +204,9 @@ main(int argc, char **argv)
 	    opts.tunnelDevice = optarg;
 	    break;
 	case 'j':
+	    std::cerr << argv[0]
+		      << ": Jitter (-j) not actually implemented yet."
+		      << std::endl;
 	    opts.jitter = atof(optarg);
 	    break;
 	case 'p':
