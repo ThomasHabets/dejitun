@@ -105,7 +105,7 @@ Dejitun::run()
 	    std::auto_ptr<char> cp(new char[sizeof(Packet)+data.length()]);
 	    Packet *p = (Packet*)cp.get();
 	    
-	    p->version = 0;
+	    p->version = protocolVersion;
 	    p->minTime=htonll(gettimeofdaymsec()+f2i64(options.minDelay));
 	    p->maxTime=htonll(htonll(p->minTime)+f2i64(options.maxDelay));
 	    p->jitter = htonll(f2i64(options.jitter));
