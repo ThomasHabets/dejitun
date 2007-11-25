@@ -10,6 +10,8 @@ Install
 =======
 Just type "make", and then put the binary (dejitun) whereever you like.
 
+On FreeBSD you need to use "gmake" instead of "make".
+
 How it works
 ============
 FIXME: will fill this in.
@@ -23,4 +25,11 @@ Start dejitun on both hosts::
 (where 1 here is the minimum delay to induce)
 
 Set up link network on both hosts::
+Linux:
  # ifconfig dejitun0 192.168.5.1 pointopoint 192.168.5.2
+FreeBSD:
+ # ifconfig tun0 192.168.5.1 192.168.5.2
+
+Bugs
+====
+Needs -A option (on both sides) to tunnel between Linux and FreeBSD.
