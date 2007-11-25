@@ -21,7 +21,7 @@
 
 #include"dejitun.h"
 
-static const double version = 0.12f;
+static const double version = 0.13f;
 const unsigned char Dejitun::protocolVersion = 1;
 
 /**
