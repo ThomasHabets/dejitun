@@ -5,7 +5,9 @@
  *  * Dynamic adjustment of time difference.
  *  * Dynamic adjustment to window of actual jitter.
  *  * Drop privileges
- *
+ *  * NAT-traversal (one side auto-discovers the port of its peer)
+ *  * stat output on USR1
+ *  * Control-port (TCP) to change settings while running.
  */
 #include<iostream>
 #include<string>
