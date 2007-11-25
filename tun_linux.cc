@@ -1,3 +1,4 @@
+#ifdef __LINUX__
 #include<string>
 
 #include<unistd.h>
@@ -38,7 +39,7 @@ Tunnel::Tunnel(const std::string &dev)
     }
     devname = ifr.ifr_name;
 }
-
+#endif /* __LINUX__ */
 /**
  * Local variables:
  * mode: c++

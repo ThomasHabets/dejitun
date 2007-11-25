@@ -1,5 +1,6 @@
 #include<string>
 #include<sys/types.h>
+#include<sys/socket.h>
 
 /**
  *
@@ -27,6 +28,7 @@ public:
  */
 class Inet: public FDWrapper {
     struct sockaddr *peer;
+    socklen_t peerlen;
 public:
     Inet(const std::string &host,int port,int lport = -1);
     bool write(const std::string &s);

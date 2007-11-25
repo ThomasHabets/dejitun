@@ -1,13 +1,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <netinet/ip.h>
 #include <arpa/inet.h>
-
 #include "util.h"
 
 /**
- *
+ * FIXME: AF-independent
  */
 Inet::Inet(const std::string &host,int port,int lport)
     :peer(0)
@@ -34,7 +32,7 @@ Inet::Inet(const std::string &host,int port,int lport)
     t->sin_family = AF_INET;
     t->sin_port = htons(port);
     peer = (struct sockaddr*)t;
-    listen(fd,10);
+    peerlen = sizeof(struct sockaddr_in);
 }
 
 /**
@@ -49,7 +47,7 @@ Inet::write(const std::string &s)
 		      s.data(),s.length(),
 		      0,
 		      peer,
-		      sizeof(sockaddr_storage))) {
+		      peerlen)) {
 	if (n < 0) {
 	    stats.writeError++;
 	    throw "FDWrapper::write(): FIXME";

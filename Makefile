@@ -34,7 +34,7 @@ tag:
 	$(GIT) commit -m"Updated ChangeLog"
 	$(GIT) tag -s v$(VER)
 
-dejitun: dejitun.o tun.o inet.o util.o
+dejitun: dejitun.o tun_linux.o tun_freebsd.o inet.o util.o
 	$(LD) $(LDFLAGS) -o $@ $^
 
 clean:
