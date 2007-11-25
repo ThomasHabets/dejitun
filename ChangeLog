@@ -1,3 +1,62 @@
+commit bcfa07429a3e498baa362a89646148f9a27c1a19
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Nov 25 20:18:45 2007 +0100
+
+    Upped version to 0.13
+
+commit 13d6f53b19a20f559214122b18c62734708efb6c
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Nov 25 20:16:50 2007 +0100
+
+    FreeBSD support confirmed.
+    
+    FreeBSD-Linux tunnel requires -A option on both sides, but does work.
+
+commit 6367e91a8e85e0268515a56e7ee5d243a59aa7ed
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Nov 25 20:11:15 2007 +0100
+
+    Bugfix: option -A should not require a parameter
+
+commit d87db7fb0ff2b8f1fefdad1f8137b471f796f397
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Nov 25 02:53:19 2007 +0100
+
+    more TODO
+
+commit 76a53442f13482f49c3d5553eb93b3a736869688
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Nov 25 02:21:15 2007 +0100
+
+    Added option: -A turn off AF-independence
+
+commit 3b0b36c3ec871187dde76071f3a2b862a857e98f
+Merge: 19919f2... 7082a45...
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Nov 25 02:06:01 2007 +0100
+
+    Merge branch 'master' of marvin@cvs.habets.pp.se:git/dejitun
+
+commit 19919f2d4f5656f8a9a1b577a33f74ba348eeee3
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Nov 25 02:05:39 2007 +0100
+
+    Start of FreeBSD port.
+    
+    It compiles. Unable to test if it works at the moment.
+
+commit 7082a452cbcfe7d499aef736904304af81614758
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Nov 25 01:46:00 2007 +0100
+
+    Bugfix: actually set protocol version on outgoing packets
+
+commit 8a50aadf5bde5b53dec893da40603a3cd2912524
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Nov 24 20:59:40 2007 +0100
+
+    Updated ChangeLog
+
 commit 6af829efbf2648ef949ce211196de59eda02a8dd
 Author: Thomas Habets <thomas@habets.pp.se>
 Date:   Sat Nov 24 20:58:49 2007 +0100
