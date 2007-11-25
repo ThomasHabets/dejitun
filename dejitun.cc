@@ -193,7 +193,7 @@ main(int argc, char **argv)
     Dejitun::Options opts;
 
     int c;
-    while (-1 != (c = getopt(argc, argv, "A:d:D:hj:i:p:"))) {
+    while (-1 != (c = getopt(argc, argv, "Ad:D:hj:i:p:"))) {
 	switch(c) {
 	case 'A':
 	    opts.multiAF = false;
