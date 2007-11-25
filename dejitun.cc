@@ -170,6 +170,7 @@ usage(const char *a0, int err)
 	   "\n\t[ -j <hitter> ] "
 	   "[ -h ] [ -p <local port> ]"
 	   " <remote host> <remote port>\n"
+	   "\t-A               Expert use only: turn off AF-info in proto\n"
 	   "\t-d <mindelay>    Min (optimal) delay in secs (default 0.0)\n"
 	   "\t-D <maxdelay>    Max delay (drop-limit)  (default 10.0)\n"
 	   "\t-h               Show this help text\n"
@@ -190,8 +191,11 @@ main(int argc, char **argv)
     Dejitun::Options opts;
 
     int c;
-    while (-1 != (c = getopt(argc, argv, "d:D:hj:i:p:"))) {
+    while (-1 != (c = getopt(argc, argv, "A:d:D:hj:i:p:"))) {
 	switch(c) {
+	case 'A':
+	    opts.multiAF = false;
+	    break;
 	case 'd':
 	    opts.minDelay = atof(optarg);
 	    break;

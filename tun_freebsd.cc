@@ -1,4 +1,4 @@
-#if 1
+#ifdef __FreeBSD__
 #include<sys/stat.h>
 #include<stdlib.h>
 #include<fcntl.h>
@@ -12,7 +12,7 @@
 /**
  *
  */
-Tunnel::Tunnel(const std::string &dev)
+Tunnel::Tunnel(const std::string &dev,bool header)
 {
     memset(&stats, 0, sizeof(stats));
     
@@ -27,10 +27,9 @@ Tunnel::Tunnel(const std::string &dev)
     
     devname = ::devname(st.st_rdev,S_IFCHR);
 
-    int on = 1;
-    int off = 0;
+    int head = header?1:0;
     // include 4byte header "multi-af"
-    if (0 > ioctl(fd,TUNSIFHEAD,(void*)&off)) {
+    if (0 > ioctl(fd,TUNSIFHEAD,(void*)&head)) {
 	close(fd);
 	throw "Tunnel::Tunnel(): ioctl(): FIXME";
     }

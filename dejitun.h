@@ -17,6 +17,7 @@ public:
 	double maxDelay;
 	double jitter;
 	std::string tunnelDevice;
+	bool multiAF;
 	Options()
 	    :
 	    remotePort(12345),
@@ -24,7 +25,8 @@ public:
 	    minDelay(0),
 	    maxDelay(10),
 	    jitter(0),
-	    tunnelDevice("dejitun%d")
+	    tunnelDevice("dejitun%d"),
+	    multiAF(true)
 	{
 	}
     };
@@ -35,7 +37,7 @@ public:
     Inet inet;
     Dejitun(const Options&opts)
 	:options(opts),
-	 tun(opts.tunnelDevice),
+	 tun(opts.tunnelDevice,opts.multiAF),
 	 inet(opts.peer, opts.remotePort, opts.localPort)
     {
     }

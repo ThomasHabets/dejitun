@@ -1,4 +1,4 @@
-#ifdef __LINUX__
+#ifdef __linux__
 #include<string>
 
 #include<unistd.h>
@@ -20,7 +20,7 @@
 /**
  *
  */
-Tunnel::Tunnel(const std::string &dev)
+Tunnel::Tunnel(const std::string &dev, bool header)
 {
     memset(&stats, 0, sizeof(stats));
     
@@ -32,6 +32,12 @@ Tunnel::Tunnel(const std::string &dev)
     memset(&ifr,0,sizeof(struct ifreq));
 
     ifr.ifr_flags = IFF_TUN;
+
+    if (!header) {
+	// AF_INET-only tunnel. For debugging and porting.
+	ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
+    }
+
     strncpy(ifr.ifr_name,dev.c_str(),IFNAMSIZ);
     if (0 > ioctl(fd,TUNSETIFF,(void*)&ifr)) {
 	close(fd);

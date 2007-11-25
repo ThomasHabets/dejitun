@@ -40,7 +40,7 @@ public:
 class Tunnel: public FDWrapper {
     std::string devname;
 public:
-    Tunnel(const std::string &dev);
+    Tunnel(const std::string &dev,bool header=true);
     const std::string &getDevname() const { return devname; }
 };
 
