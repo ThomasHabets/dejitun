@@ -16,7 +16,7 @@ Tunnel::Tunnel(const std::string &dev,bool header)
 {
     memset(&stats, 0, sizeof(stats));
     
-    if (0 > (fd.fd = open("/dev/tun8",O_RDWR))) {
+    if (0 > (fd.fd = open((std::string("/dev/") + dev).c_str(),O_RDWR))) {
 	throw "Tunnel::Tunnel(): open(/dev/tun): FIXME";
     }
 

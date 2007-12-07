@@ -24,6 +24,14 @@
 static const double version = 0.13f;
 const unsigned char Dejitun::protocolVersion = 1;
 
+#ifdef __SunOS__
+const std::string Dejitun::defaultTunnelDevice = "tun";
+#elif defined(__linux__)
+const std::string Dejitun::defaultTunnelDevice = "dejitun%d";
+#elif defined(__FreeBSD__)
+const std::string Dejitun::defaultTunnelDevice = "tun";
+#endif
+
 /**
  *
  */
@@ -48,6 +56,8 @@ Dejitun::packetWriter()
     for(std::list<PacketEntry>::iterator itr = packetQueue.begin();
 	itr != packetQueue.end();
 	) {
+	cdebug << "Sending packets, " << packetQueue.size() << " entries"
+	       << std::endl;
 	if (0) {
 	    std::cout << "\tmin: " << itr->packet->minTime
 		      << " (curtime + "
@@ -60,7 +70,8 @@ Dejitun::packetWriter()
 		      << "\tcur: " << curTime << std::endl;
 	}
 	// FIXME: implement jitter
-	if (itr->packet->maxTime < curTime) {
+	if (itr->packet->maxTime && (itr->packet->maxTime < curTime)) {
+	    cdebug << "Packet too old, discarding" << std::endl;
 	    delete[] itr->packet;
 	    // FIXME: stats.drop++
 	    packetQueue.erase(itr);
@@ -134,9 +145,14 @@ Dejitun::run()
 	    memcpy(p, data.data(), len);
 	    len -= sizeof(struct Packet);
 	    if (p->version != protocolVersion) {
+		cdebug << "Wrong version "
+		       << p->version << " != " << protocolVersion
+		       << std::endl;
 		delete[] p;
 	    } else {
 		try {
+		    cdebug << "Scheduling packet for insert into tunnel"
+			   << std::endl;
 		    schedulePacket(p, len, &tun);
 		} catch(...) {
 		    delete[] p;
@@ -176,11 +192,12 @@ usage(const char *a0, int err)
 	   "\t-d <mindelay>    Min (optimal) delay in secs (default 0.0)\n"
 	   "\t-D <maxdelay>    Max delay (drop-limit)  (default 10.0)\n"
 	   "\t-h               Show this help text\n"
-	   "\t-i <tunneldev>   Name of tunnel device (default dejitun%%d)\n"
+	   "\t-i <tunneldev>   Name of tunnel device (default %s)\n"
 	   "\t-j <jitter>      Jitter between min and min+jitter (default 0.0)"
 	   "\n"
 	   "\t-p <local port>  Local port to listen to (default 12345)\n"
-	   ,version,a0);
+	   "\t-v <debugfile>   Output verbose (debug) stuff to file\n"
+	   ,version,a0,Dejitun::defaultTunnelDevice.c_str());
     exit(err);
 }
 
@@ -193,7 +210,7 @@ main(int argc, char **argv)
     Dejitun::Options opts;
 
     int c;
-    while (-1 != (c = getopt(argc, argv, "Ad:D:hj:i:p:"))) {
+    while (-1 != (c = getopt(argc, argv, "Ad:D:hj:i:p:v:"))) {
 	switch(c) {
 	case 'A':
 	    opts.multiAF = false;
@@ -217,6 +234,9 @@ main(int argc, char **argv)
 	    break;
 	case 'p':
 	    opts.localPort = atoi(optarg);
+	    break;
+	case 'v':
+	    opts.debugfile = optarg;
 	    break;
 	default:
 	    usage(argv[0], 1);

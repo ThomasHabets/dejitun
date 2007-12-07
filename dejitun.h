@@ -1,4 +1,6 @@
 #include<string>
+#include<fstream>
+
 #include<sys/types.h>
 
 #include"util.h"
@@ -7,7 +9,8 @@
  *
  */
 class Dejitun {
-public:	
+public:
+    static const std::string defaultTunnelDevice;
     class Options {
     public:
 	std::string peer;
@@ -18,6 +21,7 @@ public:
 	double jitter;
 	std::string tunnelDevice;
 	bool multiAF;
+	std::string debugfile;
 	Options()
 	    :
 	    remotePort(12345),
@@ -25,8 +29,9 @@ public:
 	    minDelay(0),
 	    maxDelay(10),
 	    jitter(0),
-	    tunnelDevice("dejitun%d"),
-	    multiAF(true)
+	    tunnelDevice(defaultTunnelDevice),
+	    multiAF(true),
+	    debugfile("/dev/null")
 	{
 	}
     };
@@ -40,9 +45,11 @@ public:
 	 tun(opts.tunnelDevice,opts.multiAF),
 	 inet(opts.peer, opts.remotePort, opts.localPort)
     {
+	cdebug.open(options.debugfile.c_str());
     }
     const std::string &getDevname() const { return tun.getDevname(); }
     void run();
+    std::ofstream cdebug;
 
 protected:
     // over-the-wire protocol
