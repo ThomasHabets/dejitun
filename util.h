@@ -8,6 +8,7 @@
 class FDWrapper {
 protected:
     int fd;
+    virtual void osdepDestructor() {}
 public:
     struct {
 	uint64_t shortWrite;
@@ -18,8 +19,8 @@ public:
     int getFd() const { return fd; }
 
     // returns false for warnings. FIXME: change this?
-    bool write(const std::string &s);
-    std::string read();
+    virtual bool write(const std::string &s);
+    virtual std::string read();
     virtual ~FDWrapper();
 };
 
@@ -39,6 +40,10 @@ public:
  */
 class Tunnel: public FDWrapper {
     std::string devname;
+#ifdef __SunOS__
+    int udpfd;
+    void osdepDestructor();
+#endif
 public:
     Tunnel(const std::string &dev,bool header=true);
     const std::string &getDevname() const { return devname; }

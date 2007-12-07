@@ -86,6 +86,7 @@ FDWrapper::~FDWrapper()
 	close(fd);
 	fd = -1;
     }
+    osdepDestructor();
 }
 
 /**
