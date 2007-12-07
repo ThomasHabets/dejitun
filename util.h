@@ -2,6 +2,17 @@
 #include<sys/types.h>
 #include<sys/socket.h>
 
+class LLFDWrap {
+protected:
+    LLFDWrap(const LLFDWrap&);
+    const LLFDWrap &operator=(const LLFDWrap&) const;
+public:
+    int fd;
+    LLFDWrap(): fd(-1) {}
+    void close()  { if (fd > 0) { ::close(fd); } }
+    ~LLFDWrap() { close(); }
+};
+
 /**
  *
  */
