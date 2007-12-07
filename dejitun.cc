@@ -126,6 +126,9 @@ Dejitun::run()
 	    if (!options.minDelay) {
 		p->minTime = 0;
 	    }
+	    if (!options.maxDelay) {
+		p->maxTime = 0;
+	    }
 	    memcpy(p->payload, data.data(), data.length());
 	    std::string s((char*)&*p,
 			  (char*)&*p+data.length()
