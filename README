@@ -30,6 +30,18 @@ Linux:
 FreeBSD:
  # ifconfig tun0 192.168.5.1 192.168.5.2
 
+OS specific stuff
+-----------------
+FreeBSD
+~~~~~~~
+Tunnel devices are auto-allocated if device "tun" is used (default).
+You can choose a specific device using for example -i tun7.
+
+Linux
+~~~~~
+If the device name contains %d then it will be replaced with a number
+that is available.
+
 Bugs
 ====
 Needs -A option (on both sides) to tunnel between Linux and FreeBSD.

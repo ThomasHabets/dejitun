@@ -1,4 +1,7 @@
 #include<string>
+
+#include<string.h>
+#include<errno.h>
 #include<sys/types.h>
 #include<sys/socket.h>
 
@@ -21,6 +24,21 @@ protected:
     LLFDWrap fd;
     virtual void osdepDestructor() {}
 public:
+    class ErrBase: public std::exception {
+	const std::string msg;
+    public:
+	ErrBase(const std::string &msg_):msg(msg_) {}
+	virtual const char *what() const throw() { return msg.c_str(); }
+	virtual ~ErrBase() throw() {};
+    };
+    class ErrSys: public ErrBase {
+    public:
+	ErrSys(const std::string &msg)
+	    :ErrBase(msg + ": " + strerror(errno))
+	    {
+	    }
+    };
+    
     struct {
 	uint64_t shortWrite;
 	uint64_t readError;

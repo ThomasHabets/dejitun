@@ -29,7 +29,7 @@ gettimeofdaymsec()
 {
     struct timeval tv;
     if (-1 == gettimeofday(&tv, NULL)) {
-	throw "gettimeofday(): FIXME";
+	throw std::string("gettimeofday(): ") + strerror(errno);
     }
     return tv.tv_sec * int64_t(1000) + tv.tv_usec/1000;
 }
@@ -54,7 +54,7 @@ FDWrapper::write(const std::string &s)
     if (n != ::write(fd.fd,s.data(),n)) {
 	if (n < 0) {
 	    stats.writeError++;
-	    throw "FDWrapper::write(): FIXME";
+	    throw ErrSys("FDWrapper::write(): write()");
 	}
 	stats.shortWrite++;
 	return false;
@@ -72,7 +72,7 @@ FDWrapper::read()
     ssize_t n;
     if (0 > (n = ::read(fd.fd,buf,sizeof(buf)))) {
 	stats.readError++;
-	throw "FDWrapper::read(): FIXME";
+	throw ErrSys("FDWrapper::read(): read()");
     }
     return std::string(buf,&buf[n]);
 }

@@ -17,12 +17,12 @@ Tunnel::Tunnel(const std::string &dev,bool header)
     memset(&stats, 0, sizeof(stats));
     
     if (0 > (fd.fd = open((std::string("/dev/") + dev).c_str(),O_RDWR))) {
-	throw "Tunnel::Tunnel(): open(/dev/tun): FIXME";
+	throw ErrSys("Tunnel::Tunnel(): open(/dev/" + dev + ") ");
     }
 
     struct stat st;
     if (0 > fstat(fd.fd, &st)) {
-	throw "Tunnel::Tunnel(): fstat(/dev/tun): FIXME";
+	throw ErrSys("Tunnel::Tunnel(): fstat(/dev/tun)");
     }
     
     devname = ::devname(st.st_rdev,S_IFCHR);
@@ -30,7 +30,7 @@ Tunnel::Tunnel(const std::string &dev,bool header)
     int head = header?1:0;
     // include 4byte header "multi-af"
     if (0 > ioctl(fd.fd,TUNSIFHEAD,(void*)&head)) {
-	throw "Tunnel::Tunnel(): ioctl(): FIXME";
+	throw ErrSys("Tunnel::Tunnel(): ioctl(TUNSIFHEAD)");
     }
 }
 

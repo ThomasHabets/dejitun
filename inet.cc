@@ -11,7 +11,7 @@ Inet::Inet(const std::string &host,int port,int lport)
     :peer(0)
 {
     if (0 > (fd.fd = socket(PF_INET, SOCK_DGRAM, 0))) {
-	throw "Inet::Inet(): socket(): FIXME";
+	throw ErrSys("Inet::Inet(): socket(PF_INET,SOCK_DGRAM)");
     }
     struct sockaddr_in sa;
     memset(&sa, 0, sizeof(struct sockaddr_in));
@@ -22,7 +22,7 @@ Inet::Inet(const std::string &host,int port,int lport)
 	if (bind(fd.fd,
 		 (struct sockaddr*)&sa,
 		 sizeof(struct sockaddr_in))) {
-	    throw "Inet::Inet(): bind(): FIXME";
+	    throw ErrSys("Inet::Inet(): bind()");
 	}
     }
     struct sockaddr_in *t = new struct sockaddr_in;
@@ -48,7 +48,7 @@ Inet::write(const std::string &s)
 		      peerlen)) {
 	if (n < 0) {
 	    stats.writeError++;
-	    throw "FDWrapper::write(): FIXME";
+	    throw ErrSys("FDWrapper::write(): sendto()");
 	}
 	stats.shortWrite++;
 	return false;

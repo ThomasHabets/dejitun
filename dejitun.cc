@@ -258,9 +258,13 @@ main(int argc, char **argv)
 	       version, tun.getDevname().c_str());
 	tun.run();
     } catch(const char*s) {
-	std::cout << s << std::endl;
+	std::cerr << s << std::endl;
+    } catch(const std::string &s) {
+	std::cerr << s << std::endl;
+    } catch(const std::exception &e) {
+	std::cerr << "std::exception: " << e.what() << std::endl;
     } catch(...) {
-	std::cout << "Unknown exception" << std::endl;
+	std::cerr << "Unknown exception" << std::endl;
     }
 }
 

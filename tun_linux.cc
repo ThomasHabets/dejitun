@@ -25,7 +25,7 @@ Tunnel::Tunnel(const std::string &dev, bool header)
     memset(&stats, 0, sizeof(stats));
     
     if (0 > (fd.fd = open("/dev/net/tun",O_RDWR))) {
-	throw "Tunnel::Tunnel(): FIXME";
+	throw ErrSys("Tunnel::Tunnel(): open(/dev/net/tun)");
     }
     
     struct ifreq ifr;
@@ -40,7 +40,7 @@ Tunnel::Tunnel(const std::string &dev, bool header)
 
     strncpy(ifr.ifr_name,dev.c_str(),IFNAMSIZ);
     if (0 > ioctl(fd.fd,TUNSETIFF,(void*)&ifr)) {
-	throw "Tunnel::Tunnel(): ioctl()";
+	throw ErrSys("Tunnel::Tunnel(): ioctl(TUNSETIFF)");
     }
     devname = ifr.ifr_name;
 }
