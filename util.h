@@ -18,7 +18,7 @@ public:
  */
 class FDWrapper {
 protected:
-    int fd;
+    LLFDWrap fd;
     virtual void osdepDestructor() {}
 public:
     struct {
@@ -26,8 +26,7 @@ public:
 	uint64_t readError;
 	uint64_t writeError;
     } stats;
-    FDWrapper(): fd(-1) {}
-    int getFd() const { return fd; }
+    int getFd() const { return fd.fd; }
 
     // returns false for warnings. FIXME: change this?
     virtual bool write(const std::string &s);
@@ -52,7 +51,7 @@ public:
 class Tunnel: public FDWrapper {
     std::string devname;
 #ifdef __SunOS__
-    int udpfd;
+    LLFDWrap udpfd;
     void osdepDestructor();
 #endif
 public:

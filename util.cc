@@ -51,7 +51,7 @@ FDWrapper::write(const std::string &s)
 {
     ssize_t n;
     n = s.length();
-    if (n != ::write(fd,s.data(),n)) {
+    if (n != ::write(fd.fd,s.data(),n)) {
 	if (n < 0) {
 	    stats.writeError++;
 	    throw "FDWrapper::write(): FIXME";
@@ -70,7 +70,7 @@ FDWrapper::read()
 {
     char buf[102400]; // 100k enough?
     ssize_t n;
-    if (0 > (n = ::read(fd,buf,sizeof(buf)))) {
+    if (0 > (n = ::read(fd.fd,buf,sizeof(buf)))) {
 	stats.readError++;
 	throw "FDWrapper::read(): FIXME";
     }
@@ -82,10 +82,6 @@ FDWrapper::read()
  */
 FDWrapper::~FDWrapper()
 {
-    if (fd >= 0) {
-	close(fd);
-	fd = -1;
-    }
     osdepDestructor();
 }
 

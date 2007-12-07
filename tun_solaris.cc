@@ -11,47 +11,30 @@ Tunnel::Tunnel(const std::string &dev,bool header)
 {
     int muxid,ppa = -1;
 
-    if (0 > (udpfd = open("/dev/udp",O_RDWR))) {
+    if (0 > (udpfd.fd = open("/dev/udp",O_RDWR))) {
 	throw "Tunnel::Tunnel(): open(/dev/udp): FIXME";
     }
-    if (0 > (fd = open((std::string("/dev/") + dev).c_str(),O_RDWR))) {
-	close(udpfd);
+    if (0 > (fd.fd = open((std::string("/dev/") + dev).c_str(),O_RDWR))) {
 	throw "Tunnel::Tunnel(): open(/dev/tun): FIXME";
     }
-    if (0 > (ppa = ioctl(fd, TUNNEWPPA, ppa))) {
-	close(udpfd);
-	close(fd);
+    if (0 > (ppa = ioctl(fd.fd, TUNNEWPPA, ppa))) {
 	throw "Tunnel::Tunnel(): ioctl(TUNNEWPPA): FIXME";
     }
     {
-	int tfd;
-	if (0 > (fd = open((std::string("/dev/") + dev).c_str(),O_RDWR))) {
-	    close(udpfd);
+	LLFDWrap tfd;
+	if (0 > (tfd.fd = open((std::string("/dev/") + dev).c_str(),O_RDWR))) {
 	    throw "Tunnel::Tunnel(): open(/dev/tun)(2): FIXME";
 	}
 
-	if (0 > (ioctl(fd,I_PUSH,"ip"))) {
-	    close(udpfd);
-	    close(fd);
-	    close(tfd);
+	if (0 > (ioctl(tfd.fd,I_PUSH,"ip"))) {
 	    throw "Tunnel::Tunnel(): ioctl(I_PUSH): FIXME";
 	}
-	if (0 > (ppa = ioctl(fd, I_UNITSEL, (char*)ppa))) {
-	    close(udpfd);
-	    close(fd);
-	    close(tfd);
+	if (0 > (ppa = ioctl(tfd.fd, I_UNITSEL, (char*)ppa))) {
 	    throw "Tunnel::Tunnel(): ioctl(TUNNEWPPA): FIXME";
 	}
-	if (0 > (muxid = ioctl(udpfd, I_PLINK, tft))) {
-	    close(udpfd);
-	    close(fd);
-	    close(tfd);
+	if (0 > (muxid = ioctl(udpfd.fd, I_PLINK, tft))) {
 	    throw "Tunnel::Tunnel(): ioctl(I_PLINK): FIXME";
 	}
-	close(tfd);
-    }
-    if (0 > (fd = open((std::string("/dev/") + dev).c_str(),O_RDWR))) {
-	throw "Tunnel::Tunnel(): open(/dev/tun): FIXME";
     }
 
     // Get name
@@ -65,8 +48,8 @@ Tunnel::Tunnel(const std::string &dev,bool header)
     strncpynt(ifr.ifr_name, devname.c_str(), sizeof(ifr.ifr_name));
     ifr.ifr_ip_muxid = muxid;
 
-    if (0 > ioctl(udpfd, SIOCSIFMUXID, &ifr) < 0) {
-	ioctl(udpfd,I_PULINK,muxid);
+    if (0 > ioctl(udpfd.fd, SIOCSIFMUXID, &ifr) < 0) {
+	ioctl(udpfd.fd,I_PULINK,muxid);
 	throw "Tunnel::Tunnel(): ioctl(SIOCSIFMUXID): FIXME";
     }
 
@@ -74,8 +57,7 @@ Tunnel::Tunnel(const std::string &dev,bool header)
     // FIXME: multi-AF support
     int head = header?1:0;
     // include 4byte header "multi-af"
-    if (0 > ioctl(fd,TUNSIFHEAD,(void*)&head)) {
-	close(fd);
+    if (0 > ioctl(fd.fd,TUNSIFHEAD,(void*)&head)) {
 	throw "Tunnel::Tunnel(): ioctl(): FIXME";
     }
 #endif
@@ -94,20 +76,17 @@ Tunnel::osdepDestructor()
     memset(&ifr,0,sizeof(ifr));
     strncpynt (ifr.ifr_name, devname.c_str(), sizeof (ifr.ifr_name));
 
-    if (ioctl (udpfd, SIOCGIFFLAGS, &ifr) < 0) {
+    if (ioctl (udpfd.fd, SIOCGIFFLAGS, &ifr) < 0) {
 	throw "Tunnel::solarisDestructor(): ioctl(): FIXME";
     }
 
-    if (ioctl (udpfd, SIOCGIFMUXID, &ifr) < 0) {
+    if (ioctl (udpfd.fd, SIOCGIFMUXID, &ifr) < 0) {
 	throw "Tunnel::solarisDestructor(): ioctl(): FIXME";
     }
 
-    if (ioctl (udpfd, I_PUNLINK, ifr.ifr_ip_muxid) < 0) {
+    if (ioctl (udpfd.fd, I_PUNLINK, ifr.ifr_ip_muxid) < 0) {
 	throw "Tunnel::solarisDestructor(): ioctl(): FIXME";
     }
-
-    close(udpfd);
-    udpfd = -1;
 }
 
 /**
@@ -119,7 +98,7 @@ Tunnel::write(const std::string &s)
     struct strbuf sbuf;
     sbuf.len = len;
     sbuf.buf = (char *)buf;
-    return putmsg (fd, NULL, &sbuf, 0) >= 0 ? sbuf.len : -1;
+    return putmsg (fd.fd, NULL, &sbuf, 0) >= 0 ? sbuf.len : -1;
 }
 
 /**
@@ -132,7 +111,7 @@ std::string Tunnel::read()
     
     sbuf.maxlen = len;
     sbuf.buf = (char *)buf;
-    if (0 > getmsg(fd, NULL, &sbuf, &f)) {
+    if (0 > getmsg(fd.fd, NULL, &sbuf, &f)) {
 	throw "Tunnel::read(): FIXME";
     }
     return std::string(sbuf.buf,sbuf.buf+sbuf.len);

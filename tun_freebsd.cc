@@ -16,12 +16,12 @@ Tunnel::Tunnel(const std::string &dev,bool header)
 {
     memset(&stats, 0, sizeof(stats));
     
-    if (0 > (fd = open("/dev/tun8",O_RDWR))) {
+    if (0 > (fd.fd = open("/dev/tun8",O_RDWR))) {
 	throw "Tunnel::Tunnel(): open(/dev/tun): FIXME";
     }
 
     struct stat st;
-    if (0 > fstat(fd, &st)) {
+    if (0 > fstat(fd.fd, &st)) {
 	throw "Tunnel::Tunnel(): fstat(/dev/tun): FIXME";
     }
     
@@ -29,8 +29,7 @@ Tunnel::Tunnel(const std::string &dev,bool header)
 
     int head = header?1:0;
     // include 4byte header "multi-af"
-    if (0 > ioctl(fd,TUNSIFHEAD,(void*)&head)) {
-	close(fd);
+    if (0 > ioctl(fd.fd,TUNSIFHEAD,(void*)&head)) {
 	throw "Tunnel::Tunnel(): ioctl(): FIXME";
     }
 }
