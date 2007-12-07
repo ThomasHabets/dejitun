@@ -5,5 +5,6 @@ dejitun.cc
 inet.cc
 tun_linux.cc
 tun_freebsd.cc
+tun_solaris.cc
 util.cc
 '''))
