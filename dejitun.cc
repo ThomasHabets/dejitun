@@ -8,6 +8,7 @@
  *  * NAT-traversal (one side auto-discovers the port of its peer)
  *  * stat output on USR1
  *  * Control-port (TCP) to change settings while running.
+ *  * Automatic IP address setup
  */
 #include<iostream>
 #include<string>
