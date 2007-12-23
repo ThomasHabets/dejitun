@@ -1,6 +1,11 @@
-#ifdef __SunOS__
+#if defined (__SVR4) && defined (__sun)
 #include<sys/sockio.h>
 #include<net/if.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+#include<fcntl.h>
+#include<unistd.h>
+#include<stropts.h>
 
 #include"util.h"
 

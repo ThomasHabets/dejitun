@@ -68,7 +68,7 @@ public:
  */
 class Tunnel: public FDWrapper {
     std::string devname;
-#ifdef __SunOS__
+#if defined (__SVR4) && defined (__sun)
     LLFDWrap udpfd;
     void osdepDestructor();
 #endif

@@ -25,7 +25,7 @@
 static const double version = 0.13f;
 const unsigned char Dejitun::protocolVersion = 1;
 
-#ifdef __SunOS__
+#if defined (__SVR4) && defined (__sun)
 const std::string Dejitun::defaultTunnelDevice = "tun";
 #elif defined(__linux__)
 const std::string Dejitun::defaultTunnelDevice = "dejitun%d";

@@ -1,3 +1,4 @@
 *.o
 dejitun
 .sconsign.dblite
+*~

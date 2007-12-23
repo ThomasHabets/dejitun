@@ -11,6 +11,10 @@ TEST=test
 WC=wc
 ECHO=echo
 
+LIBS_SOLARIS=-lsocket
+
+LIBS=$(LIBS_SOLARIS)
+
 all: $(TARGETS)
 
 VER=$(shell $(GREP) '^static const double version' dejitun.cc \
@@ -35,7 +39,7 @@ tag:
 	$(GIT) tag -s v$(VER)
 
 dejitun: dejitun.o tun_linux.o tun_freebsd.o tun_solaris.o inet.o util.o
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 clean:
 	$(RM) -f *.o $(TARGETS)
