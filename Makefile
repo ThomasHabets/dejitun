@@ -12,8 +12,8 @@ WC=wc
 ECHO=echo
 
 LIBS_SOLARIS=-lsocket
-
-LIBS=$(LIBS_SOLARIS)
+LIBS=
+#LIBS+=$(LIBS_SOLARIS)
 
 all: $(TARGETS)
 
