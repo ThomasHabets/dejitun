@@ -95,6 +95,12 @@ Dejitun::packetWriter()
 void
 Dejitun::run()
 {
+    if (options.daemonize) {
+	if (0 > daemon(0,0)) {
+	    std::cerr << "daemon(): " << strerror(errno) << std::endl;
+	}
+    }
+
     for(;;) {
 	int n;
 	struct timeval tv;
@@ -195,6 +201,7 @@ usage(const char *a0, int err)
 	   "\t-A               Expert use only: turn off AF-info in proto\n"
 	   "\t-d <mindelay>    Min (optimal) delay in secs (default 0.0)\n"
 	   "\t-D <maxdelay>    Max delay (drop-limit)  (default 10.0)\n"
+	   "\t-f               Run in background\n"
 	   "\t-h               Show this help text\n"
 	   "\t-i <tunneldev>   Name of tunnel device (default %s)\n"
 	   "\t-j <jitter>      Jitter between min and min+jitter (default 0.0)"
@@ -214,7 +221,7 @@ main(int argc, char **argv)
     Dejitun::Options opts;
 
     int c;
-    while (-1 != (c = getopt(argc, argv, "Ad:D:hj:i:p:v:"))) {
+    while (-1 != (c = getopt(argc, argv, "Ad:D:fhj:i:p:v:"))) {
 	switch(c) {
 	case 'A':
 	    opts.multiAF = false;
@@ -224,6 +231,9 @@ main(int argc, char **argv)
 	    break;
 	case 'D':
 	    opts.maxDelay = atof(optarg);
+	    break;
+	case 'f':
+	    opts.daemonize = true;
 	    break;
 	case 'h':
 	    usage(argv[0], 0);

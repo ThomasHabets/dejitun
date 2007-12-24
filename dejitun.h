@@ -22,6 +22,7 @@ public:
 	std::string tunnelDevice;
 	bool multiAF;
 	std::string debugfile;
+	bool daemonize;
 	Options()
 	    :
 	    remotePort(12345),
@@ -31,7 +32,8 @@ public:
 	    jitter(0),
 	    tunnelDevice(defaultTunnelDevice),
 	    multiAF(true),
-	    debugfile("/dev/null")
+	    debugfile("/dev/null"),
+	    daemonize(false)
 	{
 	}
     };
