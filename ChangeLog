@@ -1,3 +1,98 @@
+commit fba1b548f112494003fce3854a23ed1017cef660
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Mon Dec 24 20:03:12 2007 +0100
+
+    Upped version to 0.14
+
+commit 89e2555b7b7fb8b26c0d31ecd7f8505a81ca3a8b
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Mon Dec 24 15:58:11 2007 +0100
+
+    Added support to run as daemon (-f)
+    
+    Using daemon(3) function. Hopefully this exists "everywhere".
+
+commit 39bcfb61cbd4e789a0ed47b4d5d889763c00defc
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Mon Dec 24 14:49:19 2007 +0100
+
+    Compile fix for debian 3.1 (sarge)
+    
+    Include stdint.h to work on debian sarge (3.1)
+
+commit 9cbcb991aeece94e19b5e33e5132a75ae100124b
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Dec 23 02:24:53 2007 +0100
+
+    Fixed #defines for solaris.
+
+commit 79568f30c6d03e8a967b7559259d49a064d57ca0
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Dec 8 00:36:46 2007 +0100
+
+    Better error handling
+
+commit 4b4d3b893cc467b881c7d6d0782b8e9490676781
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Dec 8 00:08:43 2007 +0100
+
+    Add tun_solaris.cc to build system
+
+commit f1caf6c7ede5ce4b491af1f4d491e8e3aeab0b25
+Merge: 4bc5136... d408cc8...
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Dec 8 00:06:04 2007 +0100
+
+    Merge branch 'master' of marvin@cvs.habets.pp.se:git/dejitun
+
+commit 4bc5136703b06f6713da4b51a525c38eb4bee14c
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Dec 8 00:05:41 2007 +0100
+
+    added todo
+
+commit d408cc82ebc8de10b584b1c4041bb379fa82d733
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Dec 8 00:05:09 2007 +0100
+
+    maxDelay == 0 means infinite max
+
+commit afdeb73b2559d9bb2054854bd238246cfdfd4682
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Dec 7 23:59:38 2007 +0100
+
+    Debug output (-v) and default tunnel device fixes.
+
+commit 34702036d101fbd53fe23db139b1992192a24058
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Dec 7 19:31:17 2007 +0100
+
+    Switched to using auto-closing fd wrapper
+
+commit eb6994148c735e2ead9651cc3f9740fb013f8c12
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Dec 7 19:23:23 2007 +0100
+
+    Auto-closing fd wrapper.
+
+commit 3fbed1c13433bd40957dad9b71176a1e97a6bed7
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Dec 7 19:22:29 2007 +0100
+
+    Untested start of solaris port
+
+commit e1fae56461947511682e5d6dcb8a9c204a02d8da
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Mon Nov 26 23:02:37 2007 +0100
+
+    Added SCons 'makefile'
+
+commit b2e5de756a6c9b303ddd80740993e1b08a40f8f0
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sun Nov 25 20:18:53 2007 +0100
+
+    Updated ChangeLog
+
 commit bcfa07429a3e498baa362a89646148f9a27c1a19
 Author: Thomas Habets <thomas@habets.pp.se>
 Date:   Sun Nov 25 20:18:45 2007 +0100
