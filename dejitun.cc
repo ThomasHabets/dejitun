@@ -201,7 +201,7 @@ usage(const char *a0, int err)
 	   "\t-A               Expert use only: turn off AF-info in proto\n"
 	   "\t-d <mindelay>    Min (optimal) delay in secs (default 0.0)\n"
 	   "\t-D <maxdelay>    Max delay (drop-limit)  (default 10.0)\n"
-	   "\t-f               Run in background\n"
+	   "\t-f               Run in foreground\n"
 	   "\t-h               Show this help text\n"
 	   "\t-i <tunneldev>   Name of tunnel device (default %s)\n"
 	   "\t-j <jitter>      Jitter between min and min+jitter (default 0.0)"
@@ -233,7 +233,7 @@ main(int argc, char **argv)
 	    opts.maxDelay = atof(optarg);
 	    break;
 	case 'f':
-	    opts.daemonize = true;
+	    opts.daemonize = false;
 	    break;
 	case 'h':
 	    usage(argv[0], 0);

@@ -33,7 +33,7 @@ public:
 	    tunnelDevice(defaultTunnelDevice),
 	    multiAF(true),
 	    debugfile("/dev/null"),
-	    daemonize(false)
+	    daemonize(true)
 	{
 	}
     };
