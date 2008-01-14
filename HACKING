@@ -1,0 +1,7 @@
+Add new OS
+----------
+
+* new Dejitun::defaultTunnelDevice (dejitun.cc, near top)
+* add new OS tunfiles to Makefile and SConstruct
+* write tun_myOS.cc
+* add any OS-specific tunnel-local variables inside #if in util.h
