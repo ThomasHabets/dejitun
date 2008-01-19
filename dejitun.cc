@@ -1,14 +1,5 @@
 /**
- * TODO
- *  * New packet scheduler that doesn't fragment memory
- *  * Jitter emulation (depends on new scheduler)
- *  * Dynamic adjustment of time difference.
- *  * Dynamic adjustment to window of actual jitter.
- *  * Drop privileges
- *  * NAT-traversal (one side auto-discovers the port of its peer)
- *  * stat output on USR1
- *  * Control-port (TCP) to change settings while running.
- *  * Automatic IP address setup
+ * dejitun
  */
 #include<iostream>
 #include<string>
