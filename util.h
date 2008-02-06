@@ -1,6 +1,7 @@
 #include<string>
 
 #include<string.h>
+#include<unistd.h>
 #include<stdint.h>
 #include<errno.h>
 #include<sys/types.h>
@@ -98,6 +99,10 @@ int64_t gettimeofdaymsec();
  *
  */
 int64_t f2i64(double f);
+
+#if defined (__SVR4) && defined (__sun)
+int daemon(int nochdir, int noclose);
+#endif
 
 /**
  * Local variables:

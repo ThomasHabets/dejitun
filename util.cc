@@ -85,6 +85,29 @@ FDWrapper::~FDWrapper()
     osdepDestructor();
 }
 
+#if defined (__SVR4) && defined (__sun)
+/**
+ *
+ */
+int
+daemon(int nochdir, int noclose)
+{
+    pid_t pid;
+    switch((pid = fork())) {
+    case 0:
+	break;
+    case -1:
+	return -1;
+    default:
+	_exit(0);
+    }
+    setsid();
+    if (!nochdir) {
+	chdir("/");
+    }
+}
+#endif
+
 /**
  * Local variables:
  * mode: c++

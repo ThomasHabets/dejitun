@@ -5,6 +5,12 @@
 
 #include"util.h"
 
+#ifdef __GNUC__
+#define ATTR_PACKED __attribute__ ((__packed__))
+#else
+#define ATTR_PACKED
+#endif
+
 /**
  *
  */
@@ -58,9 +64,9 @@ protected:
     struct Packet {
 	char version;
 	// ms since 1970
-	int64_t   minTime __attribute__ ((__packed__));
-	int64_t   maxTime __attribute__ ((__packed__));
-	uint32_t  jitter  __attribute__ ((__packed__));
+	int64_t   minTime ATTR_PACKED;
+	int64_t   maxTime ATTR_PACKED;
+	uint32_t  jitter  ATTR_PACKED;
 	char      payload[0];
     };
 
