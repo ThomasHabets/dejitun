@@ -61,6 +61,7 @@ public:
 
 protected:
     // over-the-wire protocol
+#pragma pack(1)
     struct Packet {
 	char version;
 	// ms since 1970
@@ -69,6 +70,7 @@ protected:
 	uint32_t  jitter  ATTR_PACKED;
 	char      payload[0];
     };
+#pragma pack()
 
     typedef struct {
 	Packet *packet;
