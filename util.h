@@ -69,11 +69,17 @@ public:
  *
  */
 class Tunnel: public FDWrapper {
-    std::string devname;
 #if defined (__SVR4) && defined (__sun)
+protected:
     LLFDWrap udpfd;
     void osdepDestructor();
+public:
+    bool write(const std::string&);
+    std::string read();
 #endif
+
+protected:
+    std::string devname;
 public:
     Tunnel(const std::string &dev,bool header=true);
     const std::string &getDevname() const { return devname; }

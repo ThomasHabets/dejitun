@@ -6,6 +6,7 @@
 #include<fcntl.h>
 #include<unistd.h>
 #include<stropts.h>
+#include<net/if_tun.h>
 
 #include"util.h"
 
@@ -15,6 +16,7 @@
 Tunnel::Tunnel(const std::string &dev,bool header)
 {
     int muxid,ppa = -1;
+    struct ifreq ifr;
 
     if (0 > (udpfd.fd = open("/dev/udp",O_RDWR))) {
 	throw ErrSys("Tunnel::Tunnel(): open(/dev/udp)");
@@ -34,10 +36,10 @@ Tunnel::Tunnel(const std::string &dev,bool header)
 	if (0 > (ioctl(tfd.fd,I_PUSH,"ip"))) {
 	    throw ErrSys("Tunnel::Tunnel(): ioctl(I_PUSH)");
 	}
-	if (0 > (ppa = ioctl(tfd.fd, I_UNITSEL, (char*)ppa))) {
-	    throw ErrSys("Tunnel::Tunnel(): ioctl(TUNNEWPPA)");
+	if (0 > (ppa = ioctl(tfd.fd, IF_UNITSEL, (char*)&ppa))) {
+	    throw ErrSys("Tunnel::Tunnel(): ioctl(IF_UNITSEL)");
 	}
-	if (0 > (muxid = ioctl(udpfd.fd, I_PLINK, tft))) {
+	if (0 > (muxid = ioctl(udpfd.fd, I_PLINK, tfd.fd))) {
 	    throw ErrSys("Tunnel::Tunnel(): ioctl(I_PLINK)");
 	}
     }
@@ -50,11 +52,11 @@ Tunnel::Tunnel(const std::string &dev,bool header)
     }
 
     memset(&ifr,0,sizeof(ifr));
-    strncpynt(ifr.ifr_name, devname.c_str(), sizeof(ifr.ifr_name));
+    strncpy(ifr.ifr_name, devname.c_str(), sizeof(ifr.ifr_name));
     ifr.ifr_ip_muxid = muxid;
 
     if (0 > ioctl(udpfd.fd, SIOCSIFMUXID, &ifr) < 0) {
-	ioctl(udpfd.fd,I_PULINK,muxid);
+	ioctl(udpfd.fd,I_PLINK,muxid);
 	throw ErrSys("Tunnel::Tunnel(): ioctl(SIOCSIFMUXID)");
     }
 
@@ -74,12 +76,12 @@ Tunnel::Tunnel(const std::string &dev,bool header)
 void
 Tunnel::osdepDestructor()
 {
-    if (0 > udpfd) {
+    if (0 > udpfd.fd) {
 	return;
     }
     struct ifreq ifr;
     memset(&ifr,0,sizeof(ifr));
-    strncpynt (ifr.ifr_name, devname.c_str(), sizeof (ifr.ifr_name));
+    strncpy(ifr.ifr_name, devname.c_str(), sizeof (ifr.ifr_name));
 
     if (ioctl (udpfd.fd, SIOCGIFFLAGS, &ifr) < 0) {
 	throw ErrSys("Tunnel::solarisDestructor(): ioctl(SIOCGIFFLAGS)");
@@ -101,8 +103,8 @@ bool
 Tunnel::write(const std::string &s)
 {
     struct strbuf sbuf;
-    sbuf.len = len;
-    sbuf.buf = (char *)buf;
+    sbuf.len = s.length();
+    sbuf.buf = (char *)s.data();
     return putmsg(fd.fd, NULL, &sbuf, 0) >= 0 ? sbuf.len : -1;
 }
 
@@ -111,10 +113,11 @@ Tunnel::write(const std::string &s)
  */
 std::string Tunnel::read()
 {
+    char buf[10240];
     struct strbuf sbuf;
     int f = 0;
     
-    sbuf.maxlen = len;
+    sbuf.maxlen = sizeof(buf);
     sbuf.buf = (char *)buf;
     if (0 > getmsg(fd.fd, NULL, &sbuf, &f)) {
 	throw ErrSys("Tunnel::read(): getmsg()");

@@ -1,4 +1,5 @@
 TARGETS=dejitun
+CXX=g++
 CXXFLAGS=-g
 LD=g++
 LDFLAGS=-g
@@ -11,7 +12,11 @@ TEST=test
 WC=wc
 ECHO=echo
 
-LIBS_SOLARIS=-lsocket
+CXX_SUNCC=CC
+LD_SUNCC=CC
+CXXFLAGS_SUNCC=-features=zla
+
+LIBS_SOLARIS=-lsocket -lnsl
 LIBS=
 #LIBS+=$(LIBS_SOLARIS)
 
