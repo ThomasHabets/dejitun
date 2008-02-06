@@ -7,8 +7,10 @@
 
 #ifdef __GNUC__
 #define ATTR_PACKED __attribute__ ((__packed__))
-#else
+#elif defined(__SUNPRO_CC)
 #define ATTR_PACKED
+#else
+#error Unknown compiler
 #endif
 
 /**
