@@ -10,6 +10,7 @@
 #include<errno.h>
 #include<sys/time.h>
 #include<sys/select.h>
+#include <arpa/inet.h>
 
 #include"dejitun.h"
 
@@ -61,8 +62,7 @@ Dejitun::packetWriter()
 		      << std::endl
 		      << "\tcur: " << curTime << std::endl;
 	}
-	// FIXME: implement jitter
-	if (itr->packet->maxTime && (itr->packet->maxTime < curTime)) {
+        if (itr->packet->maxTime && (itr->packet->maxTime < curTime)) {
 	    cdebug << "Packet too old, discarding" << std::endl;
 	    delete[] itr->packet;
 	    // FIXME: stats.drop++
@@ -96,7 +96,7 @@ Dejitun::run()
 	int n;
 	struct timeval tv;
 	tv.tv_sec = 0;
-	tv.tv_usec = 10000;
+	tv.tv_usec = 5000;
 	fd_set fds;
 	FD_ZERO(&fds);
 	FD_SET(tun.getFd(), &fds);
@@ -151,6 +151,15 @@ Dejitun::run()
 		       << std::endl;
 		delete[] p;
 	    } else {
+		p->minTime = htonll(p->minTime);
+		p->maxTime = htonll(p->maxTime);
+		p->jitter = htonl(p->jitter);
+		double j = (double)rand()/RAND_MAX;
+		cdebug << "Jitter: " << (options.jitter * 1000.0 * j)
+		       << std::endl;
+
+		p->minTime += (int64_t)(options.jitter * 1000.0 * j);
+
 		try {
 		    cdebug << "Scheduling packet for insert into tunnel"
 			   << std::endl;
@@ -232,9 +241,6 @@ main(int argc, char **argv)
 	    opts.tunnelDevice = optarg;
 	    break;
 	case 'j':
-	    std::cerr << argv[0]
-		      << ": Jitter (-j) not actually implemented yet."
-		      << std::endl;
 	    opts.jitter = atof(optarg);
 	    break;
 	case 'p':
