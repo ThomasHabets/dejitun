@@ -1,6 +1,7 @@
+# dejitun/Makefile
 TARGETS=dejitun
 CXX=g++
-CXXFLAGS=-g
+CXXFLAGS=-O2 -g -Wall -W -pipe
 LD=g++
 LDFLAGS=-g
 RM=rm
