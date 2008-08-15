@@ -257,7 +257,7 @@ main(int argc, char **argv)
 	usage(argv[0], 1);
     }
     opts.peer = argv[optind];
-    opts.remotePort = atoi(argv[optind]);
+    opts.remotePort = atoi(argv[optind+1]);
 
     try {
 	Dejitun tun(opts);
