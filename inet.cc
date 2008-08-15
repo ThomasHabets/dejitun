@@ -16,7 +16,7 @@ Inet::Inet(const std::string &host,int port,int lport)
     struct sockaddr_in sa;
     memset(&sa, 0, sizeof(struct sockaddr_in));
     sa.sin_family = AF_INET;
-    sa.sin_port = htons(port);
+    sa.sin_port = htons(lport);
     sa.sin_addr.s_addr = INADDR_ANY;
     if (lport >= 0) {
 	if (bind(fd.fd,
