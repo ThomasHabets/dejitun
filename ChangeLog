@@ -1,3 +1,86 @@
+commit ef75f6258d633d39c5c6b191eb3664d786f2b9b4
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Aug 15 15:49:29 2008 +0200
+
+    Upped version to 0.15
+
+commit f6b2e138b8edafaf6a5b3c980034e14bdcb5a4c1
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Aug 15 15:36:01 2008 +0200
+
+    Bugfix: more port fixing
+
+commit 137c4ab984d76f63c2d9d07c5ae37ed03ef9cd9b
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Fri Aug 15 13:23:00 2008 +0200
+
+    Bugfix:  Actually respect port choice
+
+commit 43fd2fa9cf3723e8ec6536409170cbec602aa4db
+Author: marvinXP <thompa@fellatio.wild.junknet.pseudohacker.net>
+Date:   Wed Aug 6 20:27:14 2008 +0200
+
+    compile flags
+
+commit 1491138dabf4125285ad01131a2a819dd9915388
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Tue Mar 4 15:45:00 2008 +0100
+
+    RT#42: artificial jitter
+
+commit 91f9bde29fc3a8fc0160f060ee769d9d2e405657
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Wed Feb 6 23:28:19 2008 +0100
+
+    Compiles under Solaris.
+    
+    Compiles and almost works under Solaris with both g++ and sun CC.
+
+commit 554671535aadb98dfb76bb43b3eaf8a5d30e6a1e
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Wed Feb 6 22:05:46 2008 +0100
+
+    Check compiler brand
+
+commit e2a64414256f8bcbb04ac8fc095051f9ceded49d
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Wed Feb 6 22:02:54 2008 +0100
+
+    Pack packet header when using Sun compiler
+
+commit 640d1683ce43e6b8d4ad406b18074ae8bd72941f
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Wed Feb 6 21:58:38 2008 +0100
+
+    Compile fixes for Sun CC.
+    
+    Compile with gmake CXX=CC CXXFLAGS=-features=zla
+    tun_solaris.cc not yet fixed, since it's not functional.
+
+commit 5dfe9ae7fe0f5c0b37771a0c3041dd6e5fea4e82
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Sat Jan 19 17:22:52 2008 +0100
+
+    moved TODO to bugtracker
+
+commit 15489b49691b25d840eabaf710c118f9607d7710
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Mon Jan 14 20:40:40 2008 +0100
+
+    Invert meaning of -f switch
+
+commit ca799b409ec2b898d68c7e35b0cad838e2e6dcc3
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Mon Jan 14 20:40:19 2008 +0100
+
+    added HACKING file
+
+commit 258ec9e3c1805a17c51ba407f6c04eb65c29d2bd
+Author: Thomas Habets <thomas@habets.pp.se>
+Date:   Mon Dec 24 20:03:36 2007 +0100
+
+    Updated ChangeLog
+
 commit fba1b548f112494003fce3854a23ed1017cef660
 Author: Thomas Habets <thomas@habets.pp.se>
 Date:   Mon Dec 24 20:03:12 2007 +0100
