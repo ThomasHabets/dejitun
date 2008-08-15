@@ -1,5 +1,5 @@
-/**
- * dejitun
+/** dejitun/dejitun.cc
+ *
  */
 #include<iostream>
 #include<string>
@@ -14,7 +14,7 @@
 
 #include"dejitun.h"
 
-static const double version = 0.14f;
+static const double version = 0.15f;
 const unsigned char Dejitun::protocolVersion = 1;
 
 #if defined (__SVR4) && defined (__sun)
