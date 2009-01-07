@@ -1,3 +1,6 @@
+/** dejitun/tun_solaris.cc
+ *
+ */
 #if defined (__SVR4) && defined (__sun)
 #include<sys/sockio.h>
 #include<net/if.h>

@@ -1,3 +1,6 @@
+/** dejitun/util.h
+ *
+ */
 #include<string>
 
 #include<string.h>

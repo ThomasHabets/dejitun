@@ -25,6 +25,8 @@ const std::string Dejitun::defaultTunnelDevice = "dejitun%d";
 const std::string Dejitun::defaultTunnelDevice = "tun";
 #endif
 
+const int Dejitun::defaultListenPort = 12345;
+
 /**
  *
  */
@@ -199,16 +201,20 @@ usage(const char *a0, int err)
 	   "[ -h ] [ -p <local port> ]"
 	   " <remote host> <remote port>\n"
 	   "\t-A               Expert use only: turn off AF-info in proto\n"
-	   "\t-d <mindelay>    Min (optimal) delay in secs (default 0.0)\n"
-	   "\t-D <maxdelay>    Max delay (drop-limit)  (default 10.0)\n"
+	   "\t-d <mindelay>    Min (optimal) delay in secs (default: 0.0)\n"
+	   "\t-D <maxdelay>    Max delay (drop-limit)  (default: 10.0)\n"
 	   "\t-f               Run in foreground\n"
 	   "\t-h               Show this help text\n"
-	   "\t-i <tunneldev>   Name of tunnel device (default %s)\n"
-	   "\t-j <jitter>      Jitter between min and min+jitter (default 0.0)"
+	   "\t-i <tunneldev>   Name of tunnel device (default: %s)\n"
+	   "\t-j <jitter>      Jitter between min and min+jitter "
+           "(default: 0.0)"
 	   "\n"
-	   "\t-p <local port>  Local port to listen to (default 12345)\n"
+	   "\t-p <local port>  Local port to listen to (default: %d)\n"
 	   "\t-v <debugfile>   Output verbose (debug) stuff to file\n"
-	   ,version,a0,Dejitun::defaultTunnelDevice.c_str());
+	   ,version,a0,
+           Dejitun::defaultTunnelDevice.c_str(),
+           Dejitun::defaultListenPort
+           );
     exit(err);
 }
 

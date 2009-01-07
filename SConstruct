@@ -1,4 +1,5 @@
-env = Environment(CCFLAGS='-Wall -w -g -O2',CPPPATH='.')
+# dejitun/SConstruct
+env = Environment(CCFLAGS='-Wall -W -g -O2 -pipe',CPPPATH='.')
 
 env.Program('dejitun',Split('''
 dejitun.cc

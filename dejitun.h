@@ -1,3 +1,6 @@
+/** dejitun/dejitun.h
+ *
+ */
 #include<string>
 #include<fstream>
 
@@ -19,6 +22,7 @@
 class Dejitun {
 public:
     static const std::string defaultTunnelDevice;
+    static const int defaultListenPort;
     class Options {
     public:
 	std::string peer;
@@ -33,8 +37,8 @@ public:
 	bool daemonize;
 	Options()
 	    :
-	    remotePort(12345),
-	    localPort(12345),
+	    remotePort(-1),
+	    localPort(defaultListenPort),
 	    minDelay(0),
 	    maxDelay(10),
 	    jitter(0),
