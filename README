@@ -8,7 +8,7 @@
 
 Install
 =======
-Just type "make", and then put the binary (dejitun) whereever you like.
+Just type "make", and then put the binary (dejitun) wherever you like.
 
 On FreeBSD you need to use "gmake" instead of "make".
 
