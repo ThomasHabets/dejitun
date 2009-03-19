@@ -1,10 +1,12 @@
 /** dejitun/dejitun.cc
  *
  */
+#include<memory>
 #include<iostream>
 #include<string>
 #include<list>
 
+#include<stdlib.h>
 #include<unistd.h>
 #include<time.h>
 #include<errno.h>
