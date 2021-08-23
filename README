@@ -21,7 +21,7 @@ Running
 Creating tunnels require root access.
 
 Start dejitun on both hosts::
- # ./dejitun -d 1 -l <port on local host> <ip of peer> <port on peer>
+ # ./dejitun -d 1 -p <port on local host> <ip of peer> <port on peer>
 (where 1 here is the minimum delay to induce)
 
 Set up link network on both hosts::
