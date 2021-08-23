@@ -197,7 +197,7 @@ Dejitun::writePacket(Packet *p, size_t len, FDWrapper*dev)
 static void
 usage(const char *a0, int err)
 {
-    printf("Dejitun %.2f, by Thomas Habets <thomas@habets.pp.se>\n"
+    printf("Dejitun %.2f, by Thomas Habets <thomas@habets.se>\n"
 	   "Usage: %s [ -d <mindelay> ] [ -D <maxdelay> ] [ -i <tunnel dev> ]"
 	   "\n\t[ -j <hitter> ] "
 	   "[ -h ] [ -p <local port> ]"
@@ -269,7 +269,7 @@ main(int argc, char **argv)
 
     try {
 	Dejitun tun(opts);
-	printf("Dejitun %.2f, by Thomas Habets <thomas@habets.pp.se>, "
+	printf("Dejitun %.2f, by Thomas Habets <thomas@habets.se>, "
 	       "is up on %s\n",
 	       version, tun.getDevname().c_str());
 	tun.run();
